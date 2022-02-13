@@ -20,7 +20,7 @@ app.get("/api/beers", (req, res) => {
     res.send({ beers: db.beers });
 })
 
-app.get("/api/beers/:id", (req, res) => {
+app.get("/api/beer/:id", (req, res) => {
     let requestedBeer = {}
     db.beers.forEach(beer => {
         if (beer.id === req.params.id) requestedBeer = beer
