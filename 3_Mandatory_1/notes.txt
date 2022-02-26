@@ -1,0 +1,45 @@
+Mandatory
+    just use ejs with multiple pages and nice styling
+    it should contain terminal commands
+    code snippets
+    cover all topics and all theory
+
+Javascript
+    clean code and code conventions
+    variables
+    loops
+    callback functions
+
+Node
+    what it is
+    importing in node
+
+NPM
+    package.json
+
+Restapi conventions
+    what they are
+
+Express
+    what is
+    how to send data
+    how to serve static assets
+    
+Nodemon
+    why do we use it
+
+ejs 
+    what it is
+    why we use it
+    this is bonus
+
+
+
+
+
+
+
+
+
+
+
