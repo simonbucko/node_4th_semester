@@ -1,5 +1,37 @@
 <%- include('partials/header'); -%>
   <div class="wrapper">
-      ejs
+    <h2 class="main-title">What is a Template Engine?</h2>
+    <p>A template engine enables you to use static template files in your application. At runtime, the template engine replaces variables in a template file with actual values and transforms the template into the HTML file sent to the client. This approach makes it easier to design the HTML page.
+      A template engine is a tool that enables Frontend/Fullstack developers to write HTML markup, prepared with its(the template engine’s) defined tags or syntax that will either insert variables into the final output of the template or run some programming logic at run-time before sending the final HTML to the browser for display.
+    </p>
+    <h2>What is a EJS?</h2>
+    <p>EJS simply stands for Embedded Javascript. It is a simple templating language/engine that lets its user generate HTML with plain javascript.
+      EJS is mostly useful whenever you have to output HTML with a lot of javascript.
+    </p>
+    <h2>Installation</h2>
+    <p>To install ejs engine run the command below
+    </p>
+    <pre>
+      <code>
+$ npm install ejs</code>
+    </pre>
+    <h2>Rendering first HTML</h2>
+    <p>Assuming you have NodeJS project created with Express and EJS installed as dependencies create a folder called views
+    </p>
+    <pre>
+      <code>
+$ mkdir views</code>
+    </pre>
+    <p>Create your HTML file you want to render here and call it home.html
+      <br><br>
+      Now create a app.js file and insert code below:
+      <pre>
+        <code>
+  var x = 5;
+  var y = 6;
+  var z = x + y</code>
+      </pre>
+    </p>
+
   </div>
 <%- include('partials/footer'); -%>
