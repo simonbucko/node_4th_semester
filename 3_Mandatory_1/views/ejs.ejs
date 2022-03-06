@@ -27,11 +27,32 @@ $ mkdir views</code>
       Now create a app.js file and insert code below:
       <pre>
         <code>
-  var x = 5;
-  var y = 6;
-  var z = x + y</code>
+const express = require("express");
+const app = express()
+const PORT = 3000;
+
+// view engine
+app.set('view engine', 'ejs');
+
+app.get("/", (req, res) => {
+    res.render('home')
+})
+
+//had something else running on 8080 port
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`)
+})</code>
       </pre>
     </p>
-
+    <p>
+      Now run command below in the root of the project
+      </p>
+      <pre>
+        <code>
+$ node app.js</code>
+      </pre>
+      <p>
+        Server should be now up and running and you should be able to see your home.html page server at <a href="http://localhost:3000">http://localhost:3000</a>
+      </p>
   </div>
 <%- include('partials/footer'); -%>
