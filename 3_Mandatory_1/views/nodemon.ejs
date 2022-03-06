@@ -1,5 +1,21 @@
 <%- include('partials/header'); -%>
   <div class="wrapper">
-      nodemon
+    <h2 class="main-title">Nodemon</h2>
+    <p>nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+
+      nodemon does not require any additional changes to your code or method of development. nodemon is a replacement wrapper for node. To use nodemon, replace the word node on the command line when executing your script.
+    </p>
+    <h2>Installation</h2>
+    <p>Run command below to install nodemon globally on your system. This way you will not enforce other developers to use nodemon when running this project</p>
+    <pre>
+      <code>
+$ npm install -g nodemon</code>
+    </pre>
+    <h2>Usage</h2>
+    <p>nodemon wraps your application, so you can pass all the arguments you would normally pass to your app:</p>
+    <pre>
+      <code>
+$ nodemon [your node app]</code>
+    </pre>
   </div>
 <%- include('partials/footer'); -%>
