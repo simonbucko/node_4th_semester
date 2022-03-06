@@ -63,6 +63,10 @@ h2 {
   margin-bottom: 0;
   margin-top: 32px;
 }
+h3 {
+  text-align: left;
+  width: 100%;
+}
 
 p {
   width: 100%;

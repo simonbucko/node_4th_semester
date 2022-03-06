@@ -1,5 +1,58 @@
 <%- include('partials/header'); -%>
   <div class="wrapper">
-      rest api
+    <h2 class="main-title">REST API</h2>
+    <p>REST stands for Representational State Transfer. It is a software architectural style created by Roy Fielding in 2000 to guide the design of architecture for the web.
+
+      Any API (Application Programming Interface) that follows the REST design principle is said to be RESTful.
+      
+      Simply put, a REST API is a medium for two computers to communicate over HTTP (Hypertext Transfer Protocol), in the same way clients and servers communicate.
+    </p>
+    <h2>REST API best practices and conventions</h2>
+    <h3>1. Use JSON as the Format for Sending and Receiving Data</h3>
+    <p>
+      In the past, accepting and responding to API requests were done mostly in XML and even HTML. But these days, JSON (JavaScript Object Notation) has largely become the de-facto format for sending and receiving API data.
+
+      This is because, with XML for example, it's often a bit of a hassle to decode and encode data – so XML isn’t widely supported by frameworks anymore.
+      
+      JavaScript, for example, has an inbuilt method to parse JSON data through the fetch API because JSON was primarily made for it. But if you are using any other programming language such as Python or PHP, they now all have methods to parse and manipulate JSON data as well.
+    </p>
+    <h3>2. Use Nouns Instead of Verbs in Endpoints</h3>
+    <p>
+      When you're designing a REST API, you should not use verbs in the endpoint paths. The endpoints should use nouns, signifying what each of them does.
+<br><br>
+      This is because HTTP methods such as GET, POST, PUT, PATCH, and DELETE are already in verb form for performing basic CRUD (Create, Read, Update, Delete) operations.
+      <br><br>
+      GET, POST, PUT, PATCH, and DELETE are the commonest HTTP verbs. There are also others such as COPY, PURGE, LINK, UNLINK, and so on.
+      <br><br>
+      So, for example, an endpoint should not look like this:
+      <br><br>
+      https://mysite.com/getPosts or https://mysite.com/createPost
+      <br><br>
+      Instead, it should be something like this: https://mysite.com/posts
+      <br><br>
+      In short, you should let the HTTP verbs handle what the endpoints do. So GET would retrieve data, POST will create data, PUT will update data, and DELETE will get rid of the data.
+    </p>
+    <h3>3. Name Collections with Plural Nouns</h3>
+    <p>
+      You can think of the data of your API as a collection of different resources from your consumers.
+<br><br>
+      If you have an endpoint like https://mysite.com/post/123, it might be okay for deleting a post with a DELETE request or updating a post with PUT or PATCH request, but it doesn’t tell the user that there could be some other posts in the collection. This is why your collections should use plural nouns.
+      <br><br>
+      So, instead of https://mysite.com/post/123, it should be https://mysite.com/posts/123.
+    </p>
+    <h3>4. Use Status Codes in Error Handling</h3>
+    <p>
+      You should always use regular HTTP status codes in responses to requests made to your API. This will help your users to know what is going on – whether the request is successful, or if it fails, or something else.
+    </p>
+    <h3>5. Use Filtering, Sorting, and Pagination to Retrieve the Data Requested</h3>
+    <p>
+      Sometimes, an API's database can get incredibly large. If this happens, retrieving data from such a database could be very slow.
+<br><br>
+Filtering, sorting, and pagination are all actions that can be performed on the collection of a REST API. This lets it only retrieve, sort, and arrange the necessary data into pages so the server doesn’t get too occupied with requests.
+<br><br>
+An example of a filtered endpoint is the one below:
+https://mysite.com/posts?tags=javascript
+This endpoint will fetch any post that has a tag of JavaScript.
+    </p>
   </div>
 <%- include('partials/footer'); -%>
