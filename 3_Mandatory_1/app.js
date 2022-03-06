@@ -1,23 +1,37 @@
 const express = require("express");
 const app = express()
 const PORT = process.env.PORT || 8080;
-const { quotes } = require("./quotes.js");
 
 // view engine
 app.set('view engine', 'ejs');
 //set static route for serving files
 app.use(express.static('public'));
 
-/**
- * Returns a random number between min (inclusive) and max (inclusive)
- */
-const getRandomNumber = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 app.get("/", (req, res) => {
-    const randomIndex = getRandomNumber(0, 14)
-    res.render('home', { quote: quotes[randomIndex] })
+    res.render('home')
+})
+
+app.get("/javascript", (req, res) => {
+    res.render('javascript')
+})
+app.get("/nodejs", (req, res) => {
+    res.render('nodejs')
+})
+app.get("/npm", (req, res) => {
+    res.render('npm')
+})
+app.get("/restapi", (req, res) => {
+    res.render('restapi')
+})
+app.get("/express", (req, res) => {
+    res.render('express')
+})
+app.get("/nodemon", (req, res) => {
+    res.render('nodemon')
+})
+app.get("/ejs", (req, res) => {
+    res.render('ejs')
 })
 
 //had something else running on 8080 port
