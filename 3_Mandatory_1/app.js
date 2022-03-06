@@ -7,11 +7,10 @@ app.set('view engine', 'ejs');
 //set static route for serving files
 app.use(express.static('public'));
 
-
+//routes
 app.get("/", (req, res) => {
     res.render('home')
 })
-
 app.get("/javascript", (req, res) => {
     res.render('javascript')
 })
