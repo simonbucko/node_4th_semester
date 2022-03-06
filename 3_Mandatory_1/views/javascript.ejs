@@ -6,15 +6,119 @@
     <h2>Variables declaration</h2>
     <p>
       Variables are containers for storing data (storing data values). In JavaScript we can declare variable using these key words:
-      <ul>
+      <ul class="list">
         <li>var</li>
         <li>const</li>
         <li>let</li>
       </ul>
     </p>
+    <p>
+      Here is some code snippet using var keyword
+    </p>
     <pre>
       <code>
-node [FILE_PATH]/yourJS.js</code>
+var x = 5;
+var y = 6;
+var z = x + y</code>
     </pre>
+    <p>
+      Here is some code snippet using let keyword
+    </p>
+    <pre>
+      <code>
+let x = 5;
+let y = 6;
+let z = x + y</code>
+    </pre>
+    <p>
+      Here is some code snippet using const keyword
+    </p>
+    <pre>
+      <code>
+const x = 5;
+const y = 6;
+const z = x + y</code>
+    </pre>
+    <h2>When to Use JavaScript var?</h2>
+    <p>The var keyword is used in all JavaScript code from 1995 to 2015.
+      <br><br>
+      The let and const keywords were added to JavaScript in 2015.
+      <br><br>      
+      If you want your code to run in older browser, you must use var.</p>
+    <h2>When to Use JavaScript const?</h2>
+    <p>If you want a general rule: always declare variables with const.
+      <br><br>
+      If you think the value of the variable can change, use let.
+      <br><br>
+      When using const keyword, variable needs to have value assignment at declaration and this value can not be changed
+      <br><br>
+      When using let keyword, variable does not need to have value assignment at declaration and this value can be changed later on.
+    </p>
+    <h2>JavaScript Coding Conventions</h2>
+    <p>
+    Coding conventions are style guidelines for programming. Always use the same coding conventions for all your JavaScript projects.
+    </p>
+    <h3>Spaces Around Operators</h3>
+    <p>
+      Always put spaces around operators ( = + - * / ), and after commas:
+    </p> 
+    <pre>
+      <code>
+let x = y + z;
+const myArray = ["Volvo", "Saab", "Fiat"];</code>
+    </pre>
+    <h3>Code Indentation</h3>
+    <p>
+      Always use 2 spaces for indentation of code blocks:
+    </p> 
+    <pre>
+      <code>
+function toCelsius(fahrenheit) {
+  return (5 / 9) * (fahrenheit - 32);
+}</code>
+    </pre>
+    <h3>Statement Rules</h3>
+    <p>
+      General rules for simple statements:
+    </p> 
+    <ul class="list">
+      <li>Always end a simple statement with a semicolon.</li>
+    </ul>
+    <p>
+      General rules for complex statements:
+    </p> 
+    <ul class="list">
+      <li>Put the opening bracket at the end of the first line.</li>
+      <li>Use one space before the opening bracket.</li>
+      <li>Put the closing bracket on a new line, without leading spaces.</li>
+      <li>Do not end a complex statement with a semicolon.</li>
+    </ul>
+    <pre>
+      <code>
+const cars = ["Volvo", "Saab", "Fiat"];
+
+const person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 50,
+  eyeColor: "blue"
+};</code>
+    </pre>
+    <h2>JavaScript callbacks</h2>
+    <p>A callback is a function passed as an argument to another function. Using a callback, you could call the calculator function (myCalculator) with a callback, and let the calculator function run the callback after the calculation is finished:</p>
+    <pre>
+      <code>
+function myDisplayer(some) {
+  document.getElementById("demo").innerHTML = some;
+}
+
+function myCalculator(num1, num2, myCallback) {
+  let sum = num1 + num2;
+  myCallback(sum);
+}
+
+myCalculator(5, 5, myDisplayer);</code>
+    </pre>
+    
   </div>
 <%- include('partials/footer'); -%>

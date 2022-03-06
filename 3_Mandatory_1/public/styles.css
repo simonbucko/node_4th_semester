@@ -82,3 +82,7 @@ pre {
   white-space: -o-pre-wrap;
   word-wrap: break-word;
 }
+
+.list {
+  width: 100%;
+}
