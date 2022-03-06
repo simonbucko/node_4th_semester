@@ -16,6 +16,8 @@ Node
 
 NPM
     package.json
+    npm install
+    
 
 Restapi conventions
     what they are

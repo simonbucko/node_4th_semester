@@ -1,5 +1,77 @@
 <%- include('partials/header'); -%>
   <div class="wrapper">
-      npm
+    <h2 class="main-title">NPM</h2>
+    <p>NPM is the world's largest software registry. Open source developers from every continent use npm to share and borrow packages, and many organizations use npm to manage private development as well.
+      <br><br>
+      NPM consists of three distinct components:
+      <ul class="list">
+        <li>the website</li>
+        <li>the Command Line Interface (CLI)</li>
+        <li>the registry</li>
+      </ul>
+    </p>
+    <p>
+      Use the website to discover packages, set up profiles, and manage other aspects of your npm experience. For example, you can set up organizations to manage access to public or private packages.
+<br><br>
+The CLI runs from a terminal, and is how most developers interact with npm.
+<br><br>
+The registry is a large public database of JavaScript software and the meta-information surrounding it.
+<br><br>
+NPM is installed together when <a href="/nodejs">NodeJS</a> is installed
+    </p>
+    <h2>package.json</h2>
+    <p>
+      It is a JSON file that lives in the root directory of your project. Your package.json holds important information about the project. It contains human-readable metadata about the project (like the project name and description) as well as functional metadata like the package version number and a list of dependencies required by the application.
+      <br><br>
+      Your project's package.json is the central place to configure and describe how to interact with and run your application. It is used by the npm CLI (and yarn) to identify your project and understand how to handle the project's dependencies. It's the package.json file that enables npm to start your project, run scripts, install dependencies, publish to the NPM registry, and many other useful tasks. The npm CLI is also the best way to manage your package.json because it helps generate and update your package.json file throughout a project's life.
+<br><br>
+Your package.json fills several roles in the lifecycle of your project, some of which only apply for packages published to NPM. If you're not publishing your project to the NPM registry or otherwise making it publicly available to others, your package.json is still essential to the development flow.
+<br><br>
+Your project also must include a package.json before any packages can be installed from NPM. This is probably the top reason why you need one in your project.
+<br><br>
+An example package.json might look like this:
+    </p>
+    <pre>
+      <code>
+{
+  "name": "my-project",
+  "version": "1.5.0",
+  "description": "Express server project using compression",
+  "main": "src/index.js",
+  "scripts": {
+      "start": "node index.js",
+  "dev": "nodemon",
+  "lint": "eslint **/*.js"
+    },
+    "dependencies": {
+        "express": "^4.16.4",
+  "compression": "~1.7.4"
+    },
+    "devDependencies": {
+  "eslint": "^5.16.0",
+        "nodemon": "^1.18.11"
+    },
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/osiolabs/example.git"
+  },
+  "author": "Jon Church",
+  "contributors": [{
+  "name": "Amber Matz",
+  "email": "example@example.com",
+  "url": "https://www.osiolabs.com/#team"
+  }],
+  "keywords": ["server", "osiolabs", "express", "compression"]
+}</code>
+    </pre>
+    <h2>Starting with NodeJS project</h2>
+    <p>To get started with NodeJS project, you should always run command below</p>
+    <pre>
+      <code>
+npm install</code>
+    </pre>
+    <p>
+      This will install all NPM dependencies specified in package.json file and store them into node_modules folder
+    </p>
   </div>
 <%- include('partials/footer'); -%>
