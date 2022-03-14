@@ -5,6 +5,7 @@
 
   function setUserName(e) {
     userName = e.detail.name;
+    console.log(e);
   }
 </script>
 
