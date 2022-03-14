@@ -1,8 +1,12 @@
 <script>
-  export let name;
+  import Introduction from "./sections/Introduction.svelte";
+  import Reactivity from "./sections/Reactivity.svelte";
 </script>
 
-<main>hello {name}</main>
+<Introduction />
+<hr />
+<Reactivity />
+<hr />
 
 <style>
 </style>
