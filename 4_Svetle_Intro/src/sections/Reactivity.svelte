@@ -3,6 +3,8 @@
 
   $: doubled = index * 2;
 
+  $: console.log("current doubled value is: ", doubled);
+
   function handleClick() {
     index++;
   }
