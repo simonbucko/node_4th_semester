@@ -3,6 +3,7 @@
   import Reactivity from "./sections/Reactivity.svelte";
   import Props from "./sections/Props.svelte";
   import Logic from "./sections/Logic.svelte";
+  import Events from "./sections/Events.svelte";
 
   const data = {
     color: "red",
@@ -17,6 +18,8 @@
 <Props {...data} />
 <hr />
 <Logic />
+<hr />
+<Events />
 <hr />
 
 <style>
