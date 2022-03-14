@@ -2,6 +2,7 @@
   import Introduction from "./sections/Introduction.svelte";
   import Reactivity from "./sections/Reactivity.svelte";
   import Props from "./sections/Props.svelte";
+  import Logic from "./sections/Logic.svelte";
 
   const data = {
     color: "red",
@@ -14,6 +15,8 @@
 <Reactivity />
 <hr />
 <Props {...data} />
+<hr />
+<Logic />
 <hr />
 
 <style>
