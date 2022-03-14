@@ -1,5 +1,15 @@
 <script>
-  import PeopleTable from "../../5_Random_Table/src/components/PeopleTable.svelte";
+  import PeopleTable from "./components/PeopleTable.svelte";
 </script>
 
-<PeopleTable rows={20} />
+<div class="wrapper">
+  <PeopleTable rows={20} />
+</div>
+
+<style>
+  .wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+</style>
