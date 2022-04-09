@@ -3,8 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv"
 import mongoose from "mongoose"
 //routes
-import userRouter from "./routes/usersRouter.js"
-// import authRouter from "./routes/authRouter.js"
+import authRouter from "./routes/authRouter.js"
 
 dotenv.config()
 
@@ -15,9 +14,9 @@ mongoose.connect(process.env.MONGO_URI)
         app.use(express.json())
         app.use(cors())
         //routers
-        app.use("/api/users", userRouter);
-        // app.use("/api/auth", authRouter)
-        const PORT = process.env.PORT || 8080
+        app.use("/api/auth", authRouter)
+        app.use("/test", (req, res) => { res.send("Backend is working and is ready for requests") })
+        const PORT = process.env.PORT || 8000
         app.listen(PORT, () => {
             console.log("Server is runnig on port: ", PORT)
         })
