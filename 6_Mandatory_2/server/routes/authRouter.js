@@ -81,7 +81,6 @@ router.post("/login", body("email").isEmail().withMessage("The email is invalid"
 })
 
 router.get("/me", checkAuth, async (req, res) => {
-    console.log(req.user)
     const user = await User.findOne({ email: req.user.email })
     respondWithUser(res, 200, user)
 
