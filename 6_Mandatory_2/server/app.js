@@ -4,6 +4,7 @@ import dotenv from "dotenv"
 import mongoose from "mongoose"
 //routes
 import authRouter from "./routes/authRouter.js"
+import orderRouter from "./routes/orderRouter.js"
 import productsRouter from "./routes/productsRouter.js"
 
 dotenv.config()
@@ -17,6 +18,7 @@ mongoose.connect(process.env.MONGO_URI)
         //routers
         app.use("/api/auth", authRouter)
         app.use("/api/products", productsRouter)
+        app.use("/api/order", orderRouter)
         app.use("/test", (req, res) => { res.send("Backend is working and is ready for requests") })
         const PORT = process.env.PORT || 8000
         app.listen(PORT, () => {

@@ -10,15 +10,18 @@ const productSchema = new Schema({
     },
     imgUrl: {
         type: String,
-        trim: true
+        trim: true,
+        required: true,
     },
     price: {
         type: Number,
         min: 0,
+        required: true,
     },
     description: {
         type: String,
-        minlength: 5
+        minlength: 5,
+        required: true,
     }
 })
 
