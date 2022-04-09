@@ -30,10 +30,10 @@ router.post("/signup", body("email").isEmail().withMessage("The email is invalid
             data: null
         })
     }
-    console.log(env.process.SALT)
-    const hashedPassword = await bcrypt.hash(env.process.SALT + password, 10)
+    console.log("Salt is ", process.env.SALT)
+    const hashedPassword = await bcrypt.hash(process.env.SALT + password, 10)
     const newUser = await User.create({
-        email, name, password: hashedPassword
+        email, name, password: hashedPassword, isAdmin: false
     })
 
     const token = await JWT.sign(
@@ -49,6 +49,7 @@ router.post("/signup", body("email").isEmail().withMessage("The email is invalid
             user: {
                 id: newUser._id,
                 email: newUser.email,
+                name: newUser.name,
                 token,
                 orders: [],
             }
