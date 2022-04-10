@@ -11,7 +11,6 @@ export const respondWithUser = async (res, status, user, tokenExpirecy = 1000000
             expiresIn: tokenExpirecy
         }
     )
-    //TODO: fetch all orders
     const orders = await getAllUsersOrders(user._id);
     res.status(status).json({
         errors: [],
@@ -44,12 +43,7 @@ const getAllUsersOrders = async (userId) => {
                 description
             }
         })
-        const resolvedProducts = await Promise.all(promises)
-        // console.log("resolved products ", resolvedProducts)
-        return resolvedProducts
+        return await Promise.all(promises)
     })
-    const resolvedOrders = await Promise.all(promises)
-    console.log("resolved orders", resolvedOrders)
-    console.log("returning")
-    return resolvedOrders
+    return await Promise.all(promises)
 }

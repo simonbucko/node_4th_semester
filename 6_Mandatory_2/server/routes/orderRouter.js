@@ -8,6 +8,7 @@ const router = Router();
 router.post("/", async (req, res) => {
     try {
         await Order.create({ ...req.body, status: ORDER_STATUS.processing })
+        //TODO:implement email sending here
         res.status(201).json({
             errors: [],
             data: null
