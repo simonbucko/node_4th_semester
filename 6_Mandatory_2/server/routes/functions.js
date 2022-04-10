@@ -29,19 +29,36 @@ export const respondWithUser = async (res, status, user, tokenExpirecy = 1000000
 }
 
 const getAllUsersOrders = async (userId) => {
-    const orders = await Order.find({ userId })
+    let orders = await Order.find({ userId })
     if (orders.length === 0) return orders;
-    orders.map(async (order) => {
-        return await order.products.map(async (product) => {
+    console.log("starting")
+    const promises = orders.map(async (order) => {
+        const promises = order.products.map(async ({ productId, quantity }) => {
             console.log("new product")
-            const resolvedProduct = await Product.findById(product.productId)
-            const newObj = {
-                name: resolvedProduct.name
+            const { name, imgUrl, price, description } = await Product.findById(productId)
+            console.log({
+                productId,
+                quantity,
+                name,
+                imgUrl,
+                price,
+                description
+            })
+            return {
+                productId,
+                quantity,
+                name,
+                imgUrl,
+                price,
+                description
             }
-            console.log(newObj)
-            return newObj
         })
+        const resolvedProducts = await Promise.all(promises)
+        // console.log("resolved products ", resolvedProducts)
+        return resolvedProducts
     })
+    const resolvedOrders = await Promise.all(promises)
+    // console.log("resolved orders", resolvedOrders)
     console.log("returning")
-    return orders
+    return resolvedOrders
 }
