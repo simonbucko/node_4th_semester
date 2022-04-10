@@ -34,16 +34,7 @@ const getAllUsersOrders = async (userId) => {
     console.log("starting")
     const promises = orders.map(async (order) => {
         const promises = order.products.map(async ({ productId, quantity }) => {
-            console.log("new product")
             const { name, imgUrl, price, description } = await Product.findById(productId)
-            console.log({
-                productId,
-                quantity,
-                name,
-                imgUrl,
-                price,
-                description
-            })
             return {
                 productId,
                 quantity,
@@ -58,7 +49,7 @@ const getAllUsersOrders = async (userId) => {
         return resolvedProducts
     })
     const resolvedOrders = await Promise.all(promises)
-    // console.log("resolved orders", resolvedOrders)
+    console.log("resolved orders", resolvedOrders)
     console.log("returning")
     return resolvedOrders
 }
