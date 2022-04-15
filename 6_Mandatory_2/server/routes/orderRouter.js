@@ -22,21 +22,21 @@ router.post("/", async (req, res) => {
     }
 })
 
-router.post("/mail", async (req, res) => {
-    try {
-        await sendMail("bucino.36@gmail.com", 123, "Buzulucka")
-        res.status(200).json({
-            errors: [],
-            data: null
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(400).json({
-            errors: [],
-            data: null
-        })
-    }
-})
+// router.post("/mail", async (req, res) => {
+//     try {
+//         await sendMail("bucino.36@gmail.com", 123, "Buzulucka")
+//         res.status(200).json({
+//             errors: [],
+//             data: null
+//         })
+//     } catch (error) {
+//         console.log(error)
+//         res.status(400).json({
+//             errors: [],
+//             data: null
+//         })
+//     }
+// })
 
 
 export default router
