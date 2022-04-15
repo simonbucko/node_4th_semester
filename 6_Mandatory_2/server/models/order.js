@@ -37,6 +37,11 @@ const orderSchema = new Schema({
         type: String,
         trim: true,
         required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        minlength: 5
     }
 })
 

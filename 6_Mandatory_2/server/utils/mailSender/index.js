@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer"
 
-export const sendMail = async (receiversEmail, orderNumber) => {
-    // const testAccount = await nodemailer.createTestAccount();
+export const sendMail = async (receiversEmail, orderNumber, orderAddress) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -11,19 +10,29 @@ export const sendMail = async (receiversEmail, orderNumber) => {
     });
 
     const mailOptions = {
-        from: '"Fred Foo 👻" <simon.bucko@post.sk>', // sender address
+        from: "KEA Foot Shop", // sender address
         to: receiversEmail, // list of receivers seperated by comma
         subject: `Your order ${orderNumber}`, // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        html: generateTemplate(orderNumber, orderAddress), // html body
     }
 
     await transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
             console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
         }
+        // else {
+        //     console.log('Email sent: ' + info.response);
+        // }
     });
 
+}
+
+const generateTemplate = (orderNumber, orderAddress) => {
+    return `
+    <h2>Thank you for your order</h2>
+    <p>
+        Your order ${orderNumber} is now being processed. You will receive email, when order will
+        be on the way to you to ${orderAddress}. 
+    </p>
+    `
 }

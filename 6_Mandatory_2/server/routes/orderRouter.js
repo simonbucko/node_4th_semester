@@ -1,6 +1,5 @@
 import { Router } from "express";
 import Order from "../models/order.js"
-import { checkAuth, checkAdmin } from "../middleware/index.js"
 import { ORDER_STATUS } from "../constants/constants.js";
 import { sendMail } from "../utils/mailSender/index.js";
 
@@ -9,8 +8,7 @@ const router = Router();
 router.post("/", async (req, res) => {
     try {
         const newOrder = await Order.create({ ...req.body, status: ORDER_STATUS.processing })
-        //only send mail if mail exist on request
-        sendMail("bucino.36@gmail.com", newOrder._id)
+        await sendMail(req.body.email, newOrder._id, req.body.deliveryAddress)
         res.status(201).json({
             errors: [],
             data: null
@@ -26,7 +24,7 @@ router.post("/", async (req, res) => {
 
 router.post("/mail", async (req, res) => {
     try {
-        await sendMail("simon.bucko@post.sk", 123)
+        await sendMail("bucino.36@gmail.com", 123, "Buzulucka")
         res.status(200).json({
             errors: [],
             data: null
