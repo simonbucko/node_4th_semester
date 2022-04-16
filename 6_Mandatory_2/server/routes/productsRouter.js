@@ -16,7 +16,7 @@ router.post("/", checkAuth, checkAdmin, async (req, res) => {
 router.get("/", async (req, res) => {
     const products = await Product.find();
 
-    res.status(201).json({
+    res.status(200).json({
         errors: [],
         data: {
             products
