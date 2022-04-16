@@ -1,3 +1,8 @@
+:root {
+	--success-color: #4aed74;
+	--blur: 10px;
+  }
+
 html, body {
 	position: relative;
 	width: 100%;
