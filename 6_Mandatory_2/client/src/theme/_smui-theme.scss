@@ -4,21 +4,16 @@
 
 // Svelte Colors!
 @use '@material/theme/index' as theme with (
-  $primary: blue,
-  $secondary: #676778,
+  $primary: #e3047d,
+  $secondary: #E5E5E5,
   $surface: #fff,
   $background: #fff,
   $error: color-palette.$red-900
 );
-  
-@use '@material/button/index' as mdc-button;
-.button-shaped-round {
-  @include mdc-button.shape-radius(999px);
-  color: red
-}
 
 html,
 body {
   background-color: theme.$surface;
   color: theme.$on-surface;
 }
+
