@@ -1,9 +1,7 @@
 <script>
+  import Button, { Label } from "@smui/button";
 </script>
 
-<main>
-  <h1>Hello</h1>
-</main>
-
-<style>
-</style>
+<Button variant="raised" class="button-shaped-round">
+  <Label>Hello</Label>
+</Button>
