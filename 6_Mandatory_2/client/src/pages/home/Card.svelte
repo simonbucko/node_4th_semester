@@ -1,5 +1,7 @@
 <script>
   import Button, { Label } from "@smui/button";
+  import { navigate } from "svelte-navigator";
+  import { PRODUCT } from "../../routing/constants";
   export let name;
   export let price;
   export let productId;
@@ -11,7 +13,10 @@
   <div>{name}</div>
   <div>{price} &euro;</div>
   <div class="bottom">
-    <Button variant="raised">
+    <Button
+      variant="raised"
+      on:click={() => navigate(`${PRODUCT}/${productId}`)}
+    >
       <Label>Details</Label>
     </Button>
   </div>
