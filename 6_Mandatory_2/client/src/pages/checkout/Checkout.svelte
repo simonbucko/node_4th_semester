@@ -7,7 +7,12 @@
   import IconButton from "@smui/icon-button";
   import { Link } from "svelte-navigator";
   import { HOME } from "../../routing/constants";
+  import Textfield from "@smui/textfield";
+  import HelperText from "@smui/textfield/helper-text";
 
+  let cardNumber = "";
+  let address = "";
+  let email = "";
   let snackbarWithClose;
   let cartItems = JSON.parse(sessionStorage.getItem("cart"));
   console.log(cartItems);
@@ -73,6 +78,47 @@
           </div>
         {/each}
       </div>
+      <form>
+        <Textfield
+          style="width: 100%;"
+          helperLine$style="width: 100%;"
+          bind:value={cardNumber}
+          label="Credit Card Number"
+          required
+          type="number"
+        >
+          <HelperText slot="helper">Enter your credit card number</HelperText>
+        </Textfield>
+        <Textfield
+          style="width: 100%;"
+          helperLine$style="width: 100%;"
+          bind:value={address}
+          label="Delivery Address"
+          required
+          input$maxlength={18}
+        >
+          <HelperText slot="helper">Enter your delivery address</HelperText>
+        </Textfield>
+        <Textfield
+          style="width: 100%;"
+          helperLine$style="width: 100%;"
+          bind:value={email}
+          label="Credit Card Number"
+          required
+          input$maxlength={18}
+        >
+          <HelperText slot="helper"
+            >Enter your email to receive order confirmation</HelperText
+          >
+        </Textfield>
+        <Button
+          variant="raised"
+          type="submit"
+          style="width: 100%; margin-top: 16px"
+        >
+          <Label>Pay</Label>
+        </Button>
+      </form>
     {:else}
       <p>
         Your cart is empty. Do not wait and add some <Link to={HOME}
@@ -125,5 +171,9 @@
     align-items: center;
     gap: 8px;
     margin-right: 16px;
+  }
+
+  form {
+    margin-top: 48px;
   }
 </style>
