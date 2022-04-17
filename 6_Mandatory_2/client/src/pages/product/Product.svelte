@@ -30,6 +30,8 @@
       cart.push({
         productId: product._id,
         quantity: counter,
+        productImg: product.imgUrl,
+        productName: product.name,
       });
     } else {
       cart = JSON.parse(cart);
@@ -42,6 +44,8 @@
         cart.push({
           productId: product._id,
           quantity: counter,
+          productImg: product.imgUrl,
+          productName: product.name,
         });
       }
     }
