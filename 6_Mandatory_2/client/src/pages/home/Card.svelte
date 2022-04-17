@@ -30,6 +30,7 @@
   .card {
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 12px;
+    overflow: hidden;
   }
   img {
     width: 100%;

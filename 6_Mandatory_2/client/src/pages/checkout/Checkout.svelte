@@ -5,9 +5,12 @@
   import Loader from "../../common/Loader.svelte";
   import Snackbar, { Actions, Label as SnackLabel } from "@smui/snackbar";
   import IconButton from "@smui/icon-button";
-  let snackbarWithClose;
+  import { Link } from "svelte-navigator";
+  import { HOME } from "../../routing/constants";
 
+  let snackbarWithClose;
   let cartItems = JSON.parse(sessionStorage.getItem("cart"));
+  console.log(cartItems);
 
   const handleIncrement = () => {};
 
@@ -16,35 +19,32 @@
 
 <main>
   <div class="wrapper">
-    {#if cart !== null && cart.length !== 0}
-      {#each cartItems as item}
-        <div>{item.name}</div>
-      {/each}
-      <!-- <div class="bottom">
-        <div class="counterWrapper">
-          <div class="counter">
-            <Button variant="raised" on:click={handleDecrement}>
-              <Label>-</Label>
-            </Button>
-            <span>{counter}</span>
-            <Button variant="raised" on:click={handleIncrement}>
-              <Label>+</Label>
-            </Button>
+    <h2>Checkout</h2>
+    <p>Please check summary of your order and proceed to the payment</p>
+    {#if cartItems !== null && cartItems.length !== 0}
+      <div class="itemsWrapper">
+        {#each cartItems as { productName, productImg, quantity }}
+          <div class="item">
+            <img src={productImg} alt={productName} />
+            <h4>{productName}</h4>
+            <div class="counter">
+              <Button variant="raised" on:click={handleDecrement}>
+                <Label>-</Label>
+              </Button>
+              <span>{quantity}</span>
+              <Button variant="raised" on:click={handleIncrement}>
+                <Label>+</Label>
+              </Button>
+            </div>
           </div>
-          <div>
-            <Button
-              class="add-to-cart-btn"
-              on:click={handleAddToCart}
-              disabled={!counter}
-            >
-              <Label>ADD TO CART</Label>
-            </Button>
-          </div>
-        </div>
-      </div> -->
-      <p>hello</p>
+        {/each}
+      </div>
     {:else}
-      <p>your cart is empty</p>
+      <p>
+        Your cart is empty. Do not wait and add some <Link to={HOME}
+          >products</Link
+        >
+      </p>
     {/if}
   </div>
 </main>
@@ -63,28 +63,33 @@
     margin: auto;
   }
 
-  img {
-    width: 500px;
-  }
-  .imgWrapper {
-    display: flex;
-    justify-content: center;
-  }
-
-  .bottom {
-    display: flex;
-    justify-content: center;
-  }
-
-  .counterWrapper {
+  .itemsWrapper {
     display: flex;
     flex-direction: column;
     gap: 8px;
+  }
+  .item {
+    display: flex;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  img {
+    height: 64px;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  h4 {
+    margin-left: 16px;
+    flex: 1;
   }
 
   .counter {
     display: flex;
     align-items: center;
     gap: 8px;
+    margin-right: 16px;
   }
 </style>
