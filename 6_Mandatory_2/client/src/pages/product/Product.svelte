@@ -31,8 +31,22 @@
         productId: product._id,
         quantity: counter,
       });
-      sessionStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      cart = JSON.parse(cart);
+      const productCartIndex = cart.findIndex(
+        (item) => item.productId === product._id
+      );
+      if (productCartIndex > -1) {
+        cart[productCartIndex].quantity += counter;
+      } else {
+        cart.push({
+          productId: product._id,
+          quantity: counter,
+        });
+      }
     }
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+    counter = 0;
     snackbarWithClose.open();
   };
 
