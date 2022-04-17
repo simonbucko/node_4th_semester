@@ -23,10 +23,26 @@
         return item;
       }
     });
-    sessionStorage.setItem("cart", JSON.stringify(cart));
+    sessionStorage.setItem("cart", JSON.stringify(cartItems));
   };
 
-  const handleDecrement = (productId, quantity) => {};
+  const handleDecrement = (productId, quantity) => {
+    if (quantity === 1) {
+      cartItems = cartItems.filter((item) => item.productId !== productId);
+    } else {
+      cartItems = cartItems.map((item) => {
+        if (item.productId === productId) {
+          return {
+            ...item,
+            quantity: quantity - 1,
+          };
+        } else {
+          return item;
+        }
+      });
+    }
+    sessionStorage.setItem("cart", JSON.stringify(cartItems));
+  };
 </script>
 
 <main>
