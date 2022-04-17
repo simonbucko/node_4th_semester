@@ -5,7 +5,10 @@
   import { useParams } from "svelte-navigator";
   import { SERVER_API_URL } from "../../common/constants";
   import Loader from "../../common/Loader.svelte";
+  import Snackbar, { Actions, Label as SnackLabel } from "@smui/snackbar";
+  import IconButton from "@smui/icon-button";
   const params = useParams();
+  let snackbarWithClose;
 
   let product = null;
   let counter = 0;
@@ -17,6 +20,10 @@
   const handleDecrement = () => {
     if (counter === 0) return;
     counter--;
+  };
+
+  const handleAddToCart = () => {
+    snackbarWithClose.open();
   };
 
   onMount(async () => {
@@ -54,7 +61,7 @@
             </Button>
           </div>
           <div>
-            <Button class="add-to-cart-btn">
+            <Button class="add-to-cart-btn" on:click={handleAddToCart}>
               <Label>ADD TO CART</Label>
             </Button>
           </div>
@@ -65,6 +72,12 @@
     {/if}
   </div>
 </main>
+<Snackbar bind:this={snackbarWithClose} class="success">
+  <Label>Product added to cart</Label>
+  <Actions>
+    <IconButton class="material-icons" title="Dismiss">close</IconButton>
+  </Actions>
+</Snackbar>
 
 <style>
   main,

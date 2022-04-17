@@ -17,5 +17,9 @@ html, body {
 	width: 100%;
 }
 
+.success .mdc-snackbar__surface{
+	background-color: var(--success-color);
+}
+
 
 
