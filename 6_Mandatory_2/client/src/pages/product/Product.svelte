@@ -23,6 +23,16 @@
   };
 
   const handleAddToCart = () => {
+    //returns null if does not exist
+    let cart = sessionStorage.getItem("cart");
+    if (cart === null) {
+      cart = [];
+      cart.push({
+        productId: product._id,
+        quantity: counter,
+      });
+      sessionStorage.setItem("cart", JSON.stringify(cart));
+    }
     snackbarWithClose.open();
   };
 
@@ -61,7 +71,11 @@
             </Button>
           </div>
           <div>
-            <Button class="add-to-cart-btn" on:click={handleAddToCart}>
+            <Button
+              class="add-to-cart-btn"
+              on:click={handleAddToCart}
+              disabled={!counter}
+            >
               <Label>ADD TO CART</Label>
             </Button>
           </div>
@@ -73,7 +87,7 @@
   </div>
 </main>
 <Snackbar bind:this={snackbarWithClose} class="success">
-  <Label>Product added to cart</Label>
+  <SnackLabel>Product added to cart</SnackLabel>
   <Actions>
     <IconButton class="material-icons" title="Dismiss">close</IconButton>
   </Actions>
