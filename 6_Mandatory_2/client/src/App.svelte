@@ -1,7 +1,6 @@
 <script>
   import Button, { Label } from "@smui/button";
+  import Routing from "./routing/Routing.svelte";
 </script>
 
-<Button variant="raised" class="button-shaped-round">
-  <Label>Hello</Label>
-</Button>
+<Routing />
