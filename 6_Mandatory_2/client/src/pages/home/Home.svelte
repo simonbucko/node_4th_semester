@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import { SERVER_API_URL } from "../../common/constants";
   import Loader from "../../common/Loader.svelte";
+  import LayoutGrid, { Cell } from "@smui/layout-grid";
 
   let products = [];
 
@@ -10,17 +11,23 @@
     const {
       data: { data },
     } = await axios.get(`${SERVER_API_URL}/products`);
-    // products = data.products;
+    products = data.products;
   });
 </script>
 
 <main>
   <div class="wrapper">
-    {#each products as product}
-      {product.name}
+    {#if !!products.length}
+      <LayoutGrid>
+        {#each products as product}
+          <Cell>
+            <div>{product.name}</div>
+          </Cell>
+        {/each}
+      </LayoutGrid>
     {:else}
       <Loader />
-    {/each}
+    {/if}
   </div>
 </main>
 
@@ -28,5 +35,7 @@
   main,
   .wrapper {
     height: 100%;
+    max-width: 1000px;
+    margin: auto;
   }
 </style>
