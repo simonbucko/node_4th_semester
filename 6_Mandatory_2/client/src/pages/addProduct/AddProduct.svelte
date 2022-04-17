@@ -6,33 +6,42 @@
   import Snackbar, { Actions, Label as SnackLabel } from "@smui/snackbar";
   import IconButton from "@smui/icon-button";
   import Textfield from "@smui/textfield";
-  import HelperText from "@smui/textfield/helper-text";
 
-  let cardNumber = "";
-  let deliveryAddress = "";
-  let email = "";
-  let snackbarWithClose;
+  let name = "";
+  let imgUrl = "";
+  let price = "";
+  let description = "";
   let isProcessingOrder = false;
+  let snackbarWithClose;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     isProcessingOrder = true;
     try {
-      await axios.post(`${SERVER_API_URL}/order`, {
-        userId: "",
-        products,
-        deliveryAddress,
-        cardNumber,
-        email,
-      });
+      await axios.post(
+        `${SERVER_API_URL}/products`,
+        {
+          name,
+          imgUrl,
+          price,
+          description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxAZ21haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ5NTE4MjM0LCJleHAiOjE2NTA1MTgyMzR9.rlRLMOhjpahpYhuSXnJipzcvs1HgsfJwddxRZQOsYjQ`,
+          },
+        }
+      );
     } catch (error) {
       console.log(error);
+      return;
     }
     snackbarWithClose.open();
     isProcessingOrder = false;
-    email = "";
-    deliveryAddress = "";
-    cardNumber = "";
+    name = "";
+    imgUrl = "";
+    price = "";
+    description = "";
   };
 </script>
 
@@ -43,41 +52,40 @@
       <Textfield
         style="width: 100%;"
         helperLine$style="width: 100%;"
-        bind:value={cardNumber}
-        label="Credit Card Number"
+        bind:value={name}
+        label="Product Name"
+        required
+      />
+      <Textfield
+        style="width: 100%;"
+        helperLine$style="width: 100%;"
+        bind:value={imgUrl}
+        label="Product Image URL"
+        required
+      />
+      <Textfield
+        style="width: 100%;"
+        helperLine$style="width: 100%;"
+        bind:value={price}
+        label="Price"
         required
         type="number"
-      >
-        <HelperText slot="helper">Enter your credit card number</HelperText>
-      </Textfield>
+      />
       <Textfield
-        style="width: 100%;"
-        helperLine$style="width: 100%;"
-        bind:value={deliveryAddress}
-        label="Delivery Address"
+        textarea
+        style="width: 100%;margin-top: 16px"
+        helperLine$style="width: 100%; "
+        bind:value={description}
+        label="Description"
         required
-        input$maxlength={30}
-      >
-        <HelperText slot="helper">Enter your delivery address</HelperText>
-      </Textfield>
-      <Textfield
-        style="width: 100%;"
-        helperLine$style="width: 100%;"
-        bind:value={email}
-        label="Email Address"
-        required
-        input$maxlength={40}
-      >
-        <HelperText slot="helper"
-          >Enter your email to receive order confirmation</HelperText
-        >
-      </Textfield>
+      />
       <Button
         variant="raised"
         type="submit"
         style="width: 100%; margin-top: 16px"
+        disabled={false}
       >
-        <Label>Pay</Label>
+        <Label>Add Product</Label>
       </Button>
     </form>
   </div>
