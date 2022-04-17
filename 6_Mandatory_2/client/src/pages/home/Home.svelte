@@ -4,6 +4,7 @@
   import { SERVER_API_URL } from "../../common/constants";
   import Loader from "../../common/Loader.svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
+  import Card from "./Card.svelte";
 
   let products = [];
 
@@ -21,7 +22,12 @@
       <LayoutGrid>
         {#each products as product}
           <Cell>
-            <div>{product.name}</div>
+            <Card
+              name={product.name}
+              productId={product._id}
+              price={product.price}
+              src={product.imgUrl}
+            />
           </Cell>
         {/each}
       </LayoutGrid>
