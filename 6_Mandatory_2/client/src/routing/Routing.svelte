@@ -11,7 +11,7 @@
 </script>
 
 <Router>
-  <Route path={ROUTES.HOME}>
+  <Route primary="false" path={ROUTES.HOME}>
     <Home />
   </Route>
   <Route path={ROUTES.LOGIN}>
