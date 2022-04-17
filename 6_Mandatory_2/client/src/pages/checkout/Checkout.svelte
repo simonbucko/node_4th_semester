@@ -11,11 +11,11 @@
   import HelperText from "@smui/textfield/helper-text";
 
   let cardNumber = "";
-  let address = "";
+  let deliveryAddress = "";
   let email = "";
   let snackbarWithClose;
   let cartItems = JSON.parse(sessionStorage.getItem("cart"));
-  console.log(cartItems);
+  let isProcessingOrder = false;
 
   const handleIncrement = (productId, quantity) => {
     cartItems = cartItems.map((item) => {
@@ -48,6 +48,34 @@
     }
     sessionStorage.setItem("cart", JSON.stringify(cartItems));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    isProcessingOrder = true;
+    const products = cartItems.map(({ quantity, productId }) => ({
+      quantity,
+      productId,
+    }));
+    try {
+      //TODO:make userId dynamic
+      await axios.post(`${SERVER_API_URL}/order`, {
+        userId: "",
+        products,
+        deliveryAddress,
+        cardNumber,
+        email,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    cartItems = null;
+    sessionStorage.removeItem("cart");
+    snackbarWithClose.open();
+    isProcessingOrder = false;
+    email = "";
+    deliveryAddress = "";
+    cardNumber = "";
+  };
 </script>
 
 <main>
@@ -78,7 +106,7 @@
           </div>
         {/each}
       </div>
-      <form>
+      <form on:submit={handleSubmit}>
         <Textfield
           style="width: 100%;"
           helperLine$style="width: 100%;"
@@ -92,10 +120,10 @@
         <Textfield
           style="width: 100%;"
           helperLine$style="width: 100%;"
-          bind:value={address}
+          bind:value={deliveryAddress}
           label="Delivery Address"
           required
-          input$maxlength={18}
+          input$maxlength={30}
         >
           <HelperText slot="helper">Enter your delivery address</HelperText>
         </Textfield>
@@ -103,9 +131,9 @@
           style="width: 100%;"
           helperLine$style="width: 100%;"
           bind:value={email}
-          label="Credit Card Number"
+          label="Email Address"
           required
-          input$maxlength={18}
+          input$maxlength={40}
         >
           <HelperText slot="helper"
             >Enter your email to receive order confirmation</HelperText
@@ -128,12 +156,21 @@
     {/if}
   </div>
 </main>
+
 <Snackbar bind:this={snackbarWithClose} class="success">
-  <SnackLabel>Product added to cart</SnackLabel>
+  <SnackLabel
+    >Your order has been proceeded. You should have received confirmation email</SnackLabel
+  >
   <Actions>
     <IconButton class="material-icons" title="Dismiss">close</IconButton>
   </Actions>
 </Snackbar>
+
+{#if isProcessingOrder}
+  <div class="modal">
+    <Loader />
+  </div>
+{/if}
 
 <style>
   main,
@@ -175,5 +212,15 @@
 
   form {
     margin-top: 48px;
+  }
+
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: black;
+    opacity: 0.6;
   }
 </style>
