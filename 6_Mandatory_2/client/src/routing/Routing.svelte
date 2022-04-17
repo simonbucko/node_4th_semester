@@ -10,8 +10,8 @@
   import Signup from "../pages/signup/Signup.svelte";
 </script>
 
-<Router>
-  <Route primary={false} path={ROUTES.HOME}>
+<Router primary={false}>
+  <Route path={ROUTES.HOME}>
     <Home />
   </Route>
   <Route path={ROUTES.LOGIN}>

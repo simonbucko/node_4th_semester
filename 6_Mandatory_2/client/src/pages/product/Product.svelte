@@ -1,6 +1,101 @@
 <script>
+  import Button, { Label } from "@smui/button";
+  import axios from "axios";
+  import { onMount } from "svelte";
   import { useParams } from "svelte-navigator";
+  import { SERVER_API_URL } from "../../common/constants";
+  import Loader from "../../common/Loader.svelte";
   const params = useParams();
+
+  let product = null;
+  let counter = 0;
+
+  const handleIncrement = () => {
+    counter++;
+  };
+
+  const handleDecrement = () => {
+    if (counter === 0) return;
+    counter--;
+  };
+
+  onMount(async () => {
+    const {
+      data: { data },
+    } = await axios.get(`${SERVER_API_URL}/products/${$params.id}`);
+    product = data.product;
+  });
 </script>
 
-<h3>Welcome user {$params.id}! bleep bloop...</h3>
+<main>
+  <div class="wrapper">
+    {#if product !== null}
+      <div class="imgWrapper">
+        <img src={product.imgUrl} alt={product.name} />
+      </div>
+      <div>
+        <b>
+          {product.name}
+        </b>
+      </div>
+      <p>
+        {product.description}
+      </p>
+      <div>Price: {product.price} &euro;</div>
+      <div class="bottom">
+        <div class="counterWrapper">
+          <div class="counter">
+            <Button variant="raised" on:click={handleDecrement}>
+              <Label>-</Label>
+            </Button>
+            <span>{counter}</span>
+            <Button variant="raised" on:click={handleIncrement}>
+              <Label>+</Label>
+            </Button>
+          </div>
+          <div>
+            <Button class="add-to-cart-btn">
+              <Label>ADD TO CART</Label>
+            </Button>
+          </div>
+        </div>
+      </div>
+    {:else}
+      <Loader />
+    {/if}
+  </div>
+</main>
+
+<style>
+  main,
+  .wrapper {
+    height: 100%;
+    max-width: 1000px;
+    margin: auto;
+  }
+
+  img {
+    width: 500px;
+  }
+  .imgWrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .bottom {
+    display: flex;
+    justify-content: center;
+  }
+
+  .counterWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>

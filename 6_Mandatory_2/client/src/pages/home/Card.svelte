@@ -10,7 +10,11 @@
 
 <div class="card">
   <img {src} alt={name} />
-  <div>{name}</div>
+  <div>
+    <b>
+      {name}
+    </b>
+  </div>
   <div>{price} &euro;</div>
   <div class="bottom">
     <Button
