@@ -12,9 +12,21 @@
   let cartItems = JSON.parse(sessionStorage.getItem("cart"));
   console.log(cartItems);
 
-  const handleIncrement = () => {};
+  const handleIncrement = (productId, quantity) => {
+    cartItems = cartItems.map((item) => {
+      if (item.productId === productId) {
+        return {
+          ...item,
+          quantity: quantity + 1,
+        };
+      } else {
+        return item;
+      }
+    });
+    sessionStorage.setItem("cart", JSON.stringify(cart));
+  };
 
-  const handleDecrement = () => {};
+  const handleDecrement = (productId, quantity) => {};
 </script>
 
 <main>
@@ -23,16 +35,22 @@
     <p>Please check summary of your order and proceed to the payment</p>
     {#if cartItems !== null && cartItems.length !== 0}
       <div class="itemsWrapper">
-        {#each cartItems as { productName, productImg, quantity }}
+        {#each cartItems as { productName, productImg, quantity, productId }}
           <div class="item">
             <img src={productImg} alt={productName} />
             <h4>{productName}</h4>
             <div class="counter">
-              <Button variant="raised" on:click={handleDecrement}>
+              <Button
+                variant="raised"
+                on:click={() => handleDecrement(productId, quantity)}
+              >
                 <Label>-</Label>
               </Button>
               <span>{quantity}</span>
-              <Button variant="raised" on:click={handleIncrement}>
+              <Button
+                variant="raised"
+                on:click={() => handleIncrement(productId, quantity)}
+              >
                 <Label>+</Label>
               </Button>
             </div>
