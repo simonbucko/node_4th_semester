@@ -37,7 +37,7 @@
     <img src="logo.png" alt="KEA Foot Shop" height="60px" />
   </Link>
   <div class="rightMenu">
-    {#if $user.isAuthenticated}
+    {#if $user.isAuthenticated && !$user.isLoading}
       <div><b>{$user.name}</b></div>
       <IconButton class="material-icons" on:click={() => userMenu.setOpen(true)}
         >account_circle</IconButton
@@ -58,7 +58,7 @@
         </List>
       </Menu>
     {/if}
-    {#if !$user.isAuthenticated}
+    {#if !$user.isAuthenticated && !$user.isLoading}
       <Button variant="raised" on:click={() => navigate(LOGIN)}
         ><Label>Login</Label></Button
       >

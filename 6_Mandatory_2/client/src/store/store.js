@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export const defaultUser = {
-    isLoading: true,
+    isLoading: false,
     isAuthenticated: false,
 }
 
