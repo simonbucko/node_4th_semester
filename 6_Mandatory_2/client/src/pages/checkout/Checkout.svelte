@@ -15,7 +15,7 @@
   let deliveryAddress = "";
   let email = "";
   let snackbarWithClose;
-  let cartItems = JSON.parse(sessionStorage.getItem("cart"));
+  $: cartItems = JSON.parse(sessionStorage.getItem("cart"));
   let isProcessingOrder = false;
 
   const handleIncrement = (productId, quantity) => {
@@ -58,7 +58,6 @@
       productId,
     }));
     try {
-      //TODO:make userId dynamic
       await axios.post(`${SERVER_API_URL}/order`, {
         userId: $user.id || null,
         products,

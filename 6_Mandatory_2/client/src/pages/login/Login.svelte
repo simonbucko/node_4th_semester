@@ -70,7 +70,7 @@
         variant="raised"
         type="submit"
         style="width: 100%; margin-top: 16px"
-        disabled={false}
+        disabled={password === "" || email === ""}
       >
         <Label>Login</Label>
       </Button>

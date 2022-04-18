@@ -6,6 +6,7 @@
   import Snackbar, { Actions, Label as SnackLabel } from "@smui/snackbar";
   import IconButton from "@smui/icon-button";
   import Textfield from "@smui/textfield";
+  import { user } from "../../store/store";
 
   let name = "";
   let imgUrl = "";
@@ -28,7 +29,7 @@
         },
         {
           headers: {
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImxAZ21haWwuY29tIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNjQ5NTE4MjM0LCJleHAiOjE2NTA1MTgyMzR9.rlRLMOhjpahpYhuSXnJipzcvs1HgsfJwddxRZQOsYjQ`,
+            Authorization: `Bearer ${$user.token}`,
           },
         }
       );
