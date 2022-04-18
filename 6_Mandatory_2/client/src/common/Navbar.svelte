@@ -2,6 +2,7 @@
   import { Link } from "svelte-navigator";
   import { HOME } from "../routing/constants";
   import { user } from "../store/store";
+  import IconButton from "@smui/icon-button";
 
   console.log($user);
 </script>
@@ -14,6 +15,8 @@
     {#if $user.isAuthenticated}
       <div><b>{$user.name}</b></div>
     {/if}
+    <IconButton class="material-icons">account_circle</IconButton>
+    <IconButton class="material-icons">shopping_cart</IconButton>
   </div>
 </div>
 
