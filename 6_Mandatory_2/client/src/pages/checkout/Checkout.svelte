@@ -9,6 +9,7 @@
   import { HOME } from "../../routing/constants";
   import Textfield from "@smui/textfield";
   import HelperText from "@smui/textfield/helper-text";
+  import { user } from "../../store/store";
 
   let cardNumber = "";
   let deliveryAddress = "";
@@ -59,7 +60,7 @@
     try {
       //TODO:make userId dynamic
       await axios.post(`${SERVER_API_URL}/order`, {
-        userId: "",
+        userId: $user.id || null,
         products,
         deliveryAddress,
         cardNumber,
