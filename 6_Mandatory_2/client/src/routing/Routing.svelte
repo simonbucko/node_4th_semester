@@ -9,6 +9,8 @@
   import Product from "../pages/product/Product.svelte";
   import Signup from "../pages/signup/Signup.svelte";
   import Navbar from "../common/Navbar.svelte";
+  import PrivateRoute from "./PrivateRoute.svelte";
+  import AdminRoute from "./AdminRoute.svelte";
 </script>
 
 <Router primary={false}>
@@ -19,14 +21,11 @@
   <Route path={ROUTES.LOGIN}>
     <Login />
   </Route>
-  <Route path={ROUTES.ADD_PRODUCT}>
+  <AdminRoute path={ROUTES.ADD_PRODUCT} let:location>
     <AddProduct />
-  </Route>
+  </AdminRoute>
   <Route path={ROUTES.CHECKOUT}>
     <Checkout />
-  </Route>
-  <Route path={ROUTES.MY_ORDERS}>
-    <MyOrders />
   </Route>
   <Route path="{ROUTES.PRODUCT}/:id">
     <Product />
@@ -34,4 +33,7 @@
   <Route path={ROUTES.SIGNUP}>
     <Signup />
   </Route>
+  <PrivateRoute path={ROUTES.MY_ORDERS} let:location>
+    <MyOrders />
+  </PrivateRoute>
 </Router>

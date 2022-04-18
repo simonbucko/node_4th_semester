@@ -5,13 +5,13 @@
 
   const navigate = useNavigate();
 
-  $: if (!$user.isLoading && !$user.isAuthenticated) {
+  $: if (!$user.isLoading && !$user.isAdmin) {
     navigate(HOME, {
       replace: true,
     });
   }
 </script>
 
-{#if !$user.isLoading && $user.isAuthenticated}
+{#if !$user.isLoading && $user.isAdmin}
   <slot />
 {/if}
