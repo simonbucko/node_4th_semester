@@ -8,9 +8,11 @@
   import MyOrders from "../pages/myOrders/MyOrders.svelte";
   import Product from "../pages/product/Product.svelte";
   import Signup from "../pages/signup/Signup.svelte";
+  import Navbar from "../common/Navbar.svelte";
 </script>
 
 <Router primary={false}>
+  <Navbar />
   <Route path={ROUTES.HOME}>
     <Home />
   </Route>
