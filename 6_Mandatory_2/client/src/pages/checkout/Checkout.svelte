@@ -68,9 +68,9 @@
     } catch (error) {
       console.log(error);
     }
+    snackbarWithClose.open();
     cartItems = null;
     sessionStorage.removeItem("cart");
-    snackbarWithClose.open();
     isProcessingOrder = false;
     email = "";
     deliveryAddress = "";

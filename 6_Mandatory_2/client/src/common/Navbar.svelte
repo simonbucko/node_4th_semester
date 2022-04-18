@@ -27,6 +27,7 @@
 
   const logout = () => {
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("cart");
     user.set(defaultUser);
     navigate(HOME);
   };
