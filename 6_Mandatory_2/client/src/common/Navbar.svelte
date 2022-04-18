@@ -1,7 +1,13 @@
 <script>
   import { Link } from "svelte-navigator";
-  import { HOME, LOGIN, CHECKOUT } from "../routing/constants";
-  import { user } from "../store/store";
+  import {
+    HOME,
+    LOGIN,
+    CHECKOUT,
+    MY_ORDERS,
+    ADD_PRODUCT,
+  } from "../routing/constants";
+  import { user, defaultUser } from "../store/store";
   import IconButton from "@smui/icon-button";
   import Button, { Label } from "@smui/button";
   import { useNavigate } from "svelte-navigator";
@@ -10,12 +16,19 @@
   import Snackbar, { Actions, Label as SnackLabel } from "@smui/snackbar";
 
   let cartMenu;
+  let userMenu;
   let snackbarWithClose;
   const navigate = useNavigate();
 
   const emptyCart = () => {
     sessionStorage.removeItem("cart");
     snackbarWithClose.open();
+  };
+
+  const logout = () => {
+    sessionStorage.removeItem("token");
+    user.set(defaultUser);
+    navigate(HOME);
   };
 </script>
 
@@ -26,7 +39,24 @@
   <div class="rightMenu">
     {#if $user.isAuthenticated}
       <div><b>{$user.name}</b></div>
-      <IconButton class="material-icons">account_circle</IconButton>
+      <IconButton class="material-icons" on:click={() => userMenu.setOpen(true)}
+        >account_circle</IconButton
+      >
+      <Menu bind:this={userMenu}>
+        <List>
+          {#if $user.isAdmin}
+            <Item on:SMUI:action={() => navigate(ADD_PRODUCT)}>
+              <Text>Add Product</Text>
+            </Item>
+          {/if}
+          <Item on:SMUI:action={() => navigate(MY_ORDERS)}>
+            <Text>My Orders</Text>
+          </Item>
+          <Item on:SMUI:action={logout}>
+            <Text>Log out</Text>
+          </Item>
+        </List>
+      </Menu>
     {/if}
     {#if !$user.isAuthenticated}
       <Button variant="raised" on:click={() => navigate(LOGIN)}
