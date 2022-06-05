@@ -11,7 +11,7 @@ import chatRoomRouter from "./routes/chatRoomRouter.js"
 dotenv.config()
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
+    .then((mongoose) => {
         console.log("Connected to DB")
         const app = express()
         app.use(express.json())
@@ -26,6 +26,15 @@ mongoose.connect(process.env.MONGO_URI)
         app.listen(PORT, () => {
             console.log("Server is runnig on port: ", PORT)
         })
+
+        console.log(mongoose)
+
+        const db = mongoose.connection;
+        const collection = db.collection('chatrooms');
+        const changeStream = collection.watch();
+        changeStream.on('change', next => {
+            console.log("we have change")
+        });
     })
     .catch((error) => {
         console.log({ error })
