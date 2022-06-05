@@ -8,7 +8,6 @@
   const chatrooms = [];
 
   onMount(async () => {
-    console.log(user);
     const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
     //TODO:finish this socket thing here
     //TODO:token is for some reason undefined

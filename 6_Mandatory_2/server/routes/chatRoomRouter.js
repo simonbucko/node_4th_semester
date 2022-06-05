@@ -47,7 +47,7 @@ router.post("/", checkAuth, async (req, res) => {
     }
 })
 
-//TODO:finish this
+//TODO:finish this 
 router.get("/:productId", async (req, res) => {
     try {
         const product = await Product.findById(req.params.productId);

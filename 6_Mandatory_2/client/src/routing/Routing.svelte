@@ -22,9 +22,9 @@
   <Route path={ROUTES.LOGIN}>
     <Login />
   </Route>
-  <Route path={ROUTES.CHAT_ROOMS}>
+  <AdminRoute path={ROUTES.CHAT_ROOMS} let:location>
     <Chatrooms />
-  </Route>
+  </AdminRoute>
   <AdminRoute path={ROUTES.ADD_PRODUCT} let:location>
     <AddProduct />
   </AdminRoute>

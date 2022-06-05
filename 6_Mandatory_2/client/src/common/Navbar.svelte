@@ -6,6 +6,7 @@
     CHECKOUT,
     MY_ORDERS,
     ADD_PRODUCT,
+    CHAT_ROOMS,
   } from "../routing/constants";
   import { user, defaultUser } from "../store/store";
   import IconButton from "@smui/icon-button";
@@ -48,6 +49,9 @@
           {#if $user.isAdmin}
             <Item on:SMUI:action={() => navigate(ADD_PRODUCT)}>
               <Text>Add Product</Text>
+            </Item>
+            <Item on:SMUI:action={() => navigate(CHAT_ROOMS)}>
+              <Text>Chat Rooms</Text>
             </Item>
           {/if}
           <Item on:SMUI:action={() => navigate(MY_ORDERS)}>
