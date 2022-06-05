@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv"
 import mongoose from "mongoose"
+import { Server } from "socket.io";
 //routes
 import authRouter from "./routes/authRouter.js"
 import orderRouter from "./routes/orderRouter.js"
@@ -14,8 +15,22 @@ mongoose.connect(process.env.MONGO_URI)
     .then((mongoose) => {
         console.log("Connected to DB")
         const app = express()
+        //set up express app
         app.use(express.json())
         app.use(cors())
+        //set up sockets
+        const io = new Server(8001, {
+            cors: {
+                origin: ['http://localhost:8080']
+            }
+        });
+        io.of("/socket/chatrooms").on("connection", (socket) => {
+            console.log("socket.io: User connected: ", socket.id);
+
+            socket.on("disconnect", () => {
+                console.log("socket.io: User disconnected: ", socket.id);
+            });
+        });
         //routers
         app.use("/api/auth", authRouter)
         app.use("/api/products", productsRouter)

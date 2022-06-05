@@ -1,14 +1,10 @@
 <script>
   import { onMount } from "svelte";
   import { SERVER_API_URL } from "../../common/constants";
-
-  let products = [];
+  import io from "socket.io-client";
 
   onMount(async () => {
-    const {
-      data: { data },
-    } = await axios.get(`${SERVER_API_URL}/products`);
-    products = data.products;
+    const socket = io(`http://localhost:8001/socket/chatrooms`);
   });
 </script>
 
