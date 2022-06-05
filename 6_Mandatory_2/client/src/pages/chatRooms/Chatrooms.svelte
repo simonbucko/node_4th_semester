@@ -5,7 +5,7 @@
   import io from "socket.io-client";
   import { user } from "../../store/store";
 
-  const chatrooms = [];
+  let chatrooms = [];
 
   onMount(async () => {
     const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
