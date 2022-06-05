@@ -28,8 +28,10 @@ const chatRoom = new Schema({
                 trim: true,
                 required: true
             },
-            timestamp: () => Math.floor(Date.now() / 1000)
-        }]
+            timestamp: {
+                type: String,
+            }
+        }],
     }
 })
 
