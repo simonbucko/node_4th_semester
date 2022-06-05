@@ -28,6 +28,11 @@ const chatRoom = new Schema({
                 trim: true,
                 required: true
             },
+            text: {
+                type: String,
+                trim: true,
+                required: true
+            },
             timestamp: {
                 type: String,
             }
