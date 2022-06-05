@@ -27,13 +27,21 @@ mongoose.connect(process.env.MONGO_URI)
             console.log("Server is runnig on port: ", PORT)
         })
 
-        console.log(mongoose)
-
         const db = mongoose.connection;
         const collection = db.collection('chatrooms');
         const changeStream = collection.watch();
         changeStream.on('change', next => {
-            console.log("we have change")
+            switch (next.operationType) {
+                case 'insert': {
+                    const { fullDocument: chatRoom } = next
+                    console.log(chatRoom)
+                    break;
+                }
+                default: {
+
+                    break;
+                }
+            }
         });
     })
     .catch((error) => {

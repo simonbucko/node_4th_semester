@@ -1,16 +1,17 @@
 <script>
-  import { Router, Route } from "svelte-navigator";
-  import * as ROUTES from "./constants";
+  import { Route, Router } from "svelte-navigator";
+  import Navbar from "../common/Navbar.svelte";
+  import AddProduct from "../pages/addProduct/AddProduct.svelte";
+  import Chatrooms from "../pages/chatrooms/Chatrooms.svelte";
+  import Checkout from "../pages/checkout/Checkout.svelte";
   import Home from "../pages/home/Home.svelte";
   import Login from "../pages/login/Login.svelte";
-  import AddProduct from "../pages/addProduct/AddProduct.svelte";
-  import Checkout from "../pages/checkout/Checkout.svelte";
   import MyOrders from "../pages/myOrders/MyOrders.svelte";
   import Product from "../pages/product/Product.svelte";
   import Signup from "../pages/signup/Signup.svelte";
-  import Navbar from "../common/Navbar.svelte";
-  import PrivateRoute from "./PrivateRoute.svelte";
   import AdminRoute from "./AdminRoute.svelte";
+  import * as ROUTES from "./constants";
+  import PrivateRoute from "./PrivateRoute.svelte";
 </script>
 
 <Router primary={false}>
@@ -20,6 +21,9 @@
   </Route>
   <Route path={ROUTES.LOGIN}>
     <Login />
+  </Route>
+  <Route path={ROUTES.CHAT_ROOMS}>
+    <Chatrooms />
   </Route>
   <AdminRoute path={ROUTES.ADD_PRODUCT} let:location>
     <AddProduct />
