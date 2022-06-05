@@ -19,8 +19,8 @@ mongoose.connect(process.env.MONGO_URI)
         app.use(express.json())
         app.use(cors())
         //set up sockets
-        const SOCKETS_PORT = process.env.SOCKETS_PORT || 8001
-        const io = new Server(SOCKETS_PORT, {
+        const SOCKET_PORT = process.env.SOCKET_PORT || 8001
+        const io = new Server(SOCKET_PORT, {
             cors: {
                 origin: ['http://localhost:8080']
             }
@@ -41,6 +41,7 @@ mongoose.connect(process.env.MONGO_URI)
         const PORT = process.env.PORT || 8000
         app.listen(PORT, () => {
             console.log("Server is runnig on port: ", PORT)
+            console.log("Socket server is running on port: ", SOCKET_PORT)
         })
 
         const db = mongoose.connection;

@@ -1,10 +1,10 @@
 <script>
   import { onMount } from "svelte";
-  import { SERVER_API_URL } from "../../common/constants";
+  import { SERVER_API_URL, SERVER_SOCKET_URL } from "../../common/constants";
   import io from "socket.io-client";
 
   onMount(async () => {
-    const socket = io(`http://localhost:8001/socket/chatrooms`);
+    const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
   });
 </script>
 
