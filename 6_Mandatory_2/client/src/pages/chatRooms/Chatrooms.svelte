@@ -39,12 +39,7 @@
           <div class="card">
             <div class="cardRowWrapper">
               <h3>Custorer: {chatRoom.userName}</h3>
-              <IconButton
-                class="material-icons"
-                ripple={false}
-                title="Unread messages"
-                variant="outlined">mark_chat_unread</IconButton
-              >
+              <span class="unreadMessages"> Unread Messages </span>
             </div>
             <div class="cardRowWrapper">
               <p>Category: {chatRoom.category}</p>
@@ -86,5 +81,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .unreadMessages {
+    border: 3px solid var(--secondary-color);
+    border-radius: 100px;
+    padding: 4px 16px;
+    color: var(--secondary-color);
+    animation-name: scaling;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  @keyframes scaling {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
   }
 </style>
