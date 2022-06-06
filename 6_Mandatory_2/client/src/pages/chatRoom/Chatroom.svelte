@@ -14,8 +14,10 @@
   let isLoadingChatRoom = true;
 
   onMount(async () => {
-    const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-    socket.on("new-message", (message) => {});
+    // set up socket
+    // const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
+    // socket.on("new-message", (message) => {});
+    //get chatroom data
     const {
       data: { data },
     } = await axios.get(`${SERVER_API_URL}/chatrooms/${$params.socketId}`, {

@@ -3,7 +3,7 @@
   import axios from "axios";
   import { SERVER_API_URL, SERVER_SOCKET_URL } from "../../common/constants";
   import io from "socket.io-client";
-  import { user } from "../../store/store";
+  import { user, chatRoomsSocket } from "../../store/store";
   import Loader from "../../common/Loader.svelte";
   import Button, { Label } from "@smui/button";
   import { navigate } from "svelte-navigator";
@@ -13,11 +13,16 @@
   let isLoadingChatRooms = true;
 
   onMount(async () => {
-    const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-    socket.on("new-active-chat-room", (chatRoom) => {
-      chatRooms = [chatRoom, ...chatRooms];
-      console.log(chatRooms);
-    });
+    //set up sockets
+    if (!$chatRoomsSocket.isSet) {
+      const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
+      socket.on("new-active-chat-room", (chatRoom) => {
+        chatRooms = [chatRoom, ...chatRooms];
+        console.log(chatRooms);
+      });
+      chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true });
+    }
+    //get chatrooms
     const {
       data: { data },
     } = await axios.get(`${SERVER_API_URL}/chatrooms`, {
