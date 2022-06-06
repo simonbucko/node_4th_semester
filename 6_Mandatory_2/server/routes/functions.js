@@ -3,6 +3,7 @@ import Order from "../models/order.js"
 import Product from "../models/product.js"
 import User from "../models/user.js"
 
+
 export const respondWithUser = async (res, status, user, tokenExpirecy = 1000000) => {
     const token = await JWT.sign(
         { email: user.email, isAdmin: user.isAdmin },

@@ -8,6 +8,7 @@
   import Button, { Label } from "@smui/button";
   import { navigate } from "svelte-navigator";
   import IconButton from "@smui/icon-button";
+  import chatRoom from "../../../../server/models/chatRoom";
 
   let chatRooms = [];
   let isLoadingChatRooms = true;
@@ -39,16 +40,18 @@
           <div class="card">
             <div class="cardRowWrapper">
               <h3>Custorer: {chatRoom.userName}</h3>
-              <span class="unreadMessages"> Unread Messages </span>
+              {#if chatRoom.hasUnreadMessages}
+                <span class="unreadMessages"> Unread Messages </span>
+              {/if}
             </div>
             <div class="cardRowWrapper">
               <p>Category: {chatRoom.category}</p>
-              <Button
+              <!-- <Button
                 variant="raised"
                 on:click={() => navigate(`${PRODUCT}/${productId}`)}
               >
                 <Label>Reply</Label>
-              </Button>
+              </Button> -->
             </div>
           </div>
         {/each}
@@ -88,7 +91,7 @@
     padding: 4px 16px;
     color: var(--secondary-color);
     animation-name: scaling;
-    animation-duration: 0.5s;
+    animation-duration: 0.8s;
     animation-iteration-count: infinite;
     animation-direction: alternate;
   }
