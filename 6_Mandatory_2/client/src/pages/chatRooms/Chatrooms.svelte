@@ -14,7 +14,10 @@
 
   onMount(async () => {
     const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-    //TODO:finish this socket thing here
+    socket.on("new-active-chat-room", (chatRoom) => {
+      chatRooms = [chatRoom, ...chatRooms];
+      console.log(chatRooms);
+    });
     const {
       data: { data },
     } = await axios.get(`${SERVER_API_URL}/chatrooms`, {
@@ -38,19 +41,19 @@
         {#each chatRooms as chatRoom}
           <div class="card">
             <div class="cardRowWrapper">
-              <h3>Custorer: {chatRoom.userName}</h3>
+              <h3>Customer: {chatRoom.userName}</h3>
               {#if chatRoom.hasUnreadMessages}
                 <span class="unreadMessages"> Unread Messages </span>
               {/if}
             </div>
             <div class="cardRowWrapper">
               <p>Category: {chatRoom.category}</p>
-              <!-- <Button
+              <Button
                 variant="raised"
                 on:click={() => navigate(`${PRODUCT}/${productId}`)}
               >
                 <Label>Reply</Label>
-              </Button> -->
+              </Button>
             </div>
           </div>
         {/each}
