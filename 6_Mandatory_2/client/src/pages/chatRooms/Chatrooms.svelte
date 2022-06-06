@@ -12,15 +12,21 @@
   let chatRooms = [];
   let isLoadingChatRooms = true;
 
+  console.log("was here", chatRooms);
+
   onMount(async () => {
-    //set up sockets
+    //set up sockets and prevent created new one on each page render
     if (!$chatRoomsSocket.isSet) {
       const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
       socket.on("new-active-chat-room", (chatRoom) => {
         chatRooms = [chatRoom, ...chatRooms];
-        console.log(chatRooms);
       });
-      chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true });
+      chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true, socket });
+    } else {
+      const socket = $chatRoomsSocket.socket;
+      socket.on("new-active-chat-room", (chatRoom) => {
+        chatRooms = [chatRoom, ...chatRooms];
+      });
     }
     //get chatrooms
     const {

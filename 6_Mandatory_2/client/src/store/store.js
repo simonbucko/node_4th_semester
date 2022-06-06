@@ -6,7 +6,8 @@ export const defaultUser = {
 }
 
 export const defaultChatRoomsSocket = {
-    isSet: false
+    isSet: false,
+    socket: null
 }
 
 export const user = writable(defaultUser);
