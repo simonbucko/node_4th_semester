@@ -52,8 +52,6 @@ router.post("/", checkAuth, async (req, res) => {
 router.get("/:socketId", checkAuth, checkAdmin, async (req, res) => {
     try {
         let chatRoom = await ChatRoom.findOne({ socketId: req.params.socketId });
-        console.log(chatRoom)
-        console.log(!chatRoom)
         if (!chatRoom) {
             return res.status(404).json({
                 errors: [
@@ -64,7 +62,6 @@ router.get("/:socketId", checkAuth, checkAdmin, async (req, res) => {
                 data: null
             })
         }
-        console.log("was here")
         chatRoom = await resolveAndMapUserNameFromQuery(chatRoom);
         res.status(200).json({
             errors: [],

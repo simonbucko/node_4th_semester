@@ -10,8 +10,8 @@
   import { useParams } from "svelte-navigator";
 
   const params = useParams();
-  let chatRooms = [];
-  let isLoadingChatRooms = true;
+  let chatRoom = null;
+  let isLoadingChatRoom = true;
 
   onMount(async () => {
     const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
@@ -23,16 +23,28 @@
         Authorization: `Bearer ${$user.token}`,
       },
     });
-    chatRooms = data.chatRooms;
-    isLoadingChatRooms = false;
+    chatRoom = data.chatRoom;
+    isLoadingChatRoom = false;
   });
 </script>
 
 <main>
   <div class="wrapper">
     <h2>Chat Room</h2>
-    <p>Customer name:</p>
-    <p>Category:</p>
+    <p>Here you can respond to user's questions</p>
+    {#if isLoadingChatRoom}
+      <Loader />
+    {:else if chatRoom !== null}
+      <p>User's name: {chatRoom.userName}</p>
+      <p>Category: {chatRoom.category}</p>
+      <div class="chatWrapper">
+        {#each chatRoom.messages as message}
+          <p>{message.sender}: {message.text}</p>
+        {/each}
+      </div>
+    {:else}
+      <p>Requested chat is no longer active or it could not be found</p>
+    {/if}
   </div>
 </main>
 
@@ -42,5 +54,13 @@
     height: 100%;
     max-width: 1000px;
     margin: auto;
+  }
+  .chatWrapper {
+    height: 60%;
+    border: 1px solid rgba(149, 157, 165, 0.2);
+    border-radius: 12px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding: 16px;
+    overflow-y: scroll;
   }
 </style>
