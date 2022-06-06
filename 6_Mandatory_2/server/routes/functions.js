@@ -48,7 +48,12 @@ const getAllUsersOrders = async (userId) => {
     return await Promise.all(promises)
 }
 
-export const resolveAndMapUserName = async (array) => {
+export const resolveAndMapUserName = async (obj) => {
+    const { name } = await User.findById(obj.userId)
+    return { ...obj, userName: name }
+}
+
+export const resolveAndMapUserNames = async (array) => {
     if (array.length === 0) return array;
     const promises = array.map(async (item, index) => {
         const { name } = await User.findById(item.userId)

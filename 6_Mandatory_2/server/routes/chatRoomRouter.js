@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { checkAdmin, checkAuth } from "../middleware/index.js";
 import ChatRoom from "../models/chatRoom.js"
-import { resolveAndMapUserName } from "./functions.js"
+import { resolveAndMapUserNames } from "./functions.js"
 
 const router = Router();
 
 router.get("/", checkAuth, checkAdmin, async (req, res) => {
     try {
         let chatRooms = await ChatRoom.find()
-        chatRooms = await resolveAndMapUserName(chatRooms)
+        chatRooms = await resolveAndMapUserNames(chatRooms)
         res.status(200).json({
             errors: [],
             data: {

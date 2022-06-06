@@ -1,4 +1,5 @@
 import { Server } from "socket.io";
+import { resolveAndMapUserName } from "./routes/functions.js";
 
 
 const socketServer = (socketPort, mongoose) => {
@@ -26,11 +27,12 @@ const registerChangeStream = (io, mongoose) => {
     const db = mongoose.connection;
     const collection = db.collection('chatrooms');
     const changeStream = collection.watch();
-    changeStream.on('change', next => {
-        console.log(next)
+    changeStream.on('change', async (next) => {
+        // console.log(next)
         switch (next.operationType) {
             case 'insert': {
-                const { fullDocument: chatRoom } = next
+                let { fullDocument: chatRoom } = next
+                chatRoom = await resolveAndMapUserName(chatRoom)
                 io.of("/socket/chatrooms").emit("new-active-chat-room", chatRoom)
                 break;
             }
