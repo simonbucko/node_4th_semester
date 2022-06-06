@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { checkAdmin, checkAuth } from "../middleware/index.js";
 import ChatRoom from "../models/chatRoom.js"
-import { resolveAndMapUserNames } from "./functions.js"
+import { resolveAndMapUserNamesFromQuery, resolveAndMapUserNameFromQuery } from "./functions.js"
 
 const router = Router();
 
 router.get("/", checkAuth, checkAdmin, async (req, res) => {
     try {
         let chatRooms = await ChatRoom.find()
-        chatRooms = await resolveAndMapUserNames(chatRooms)
+        chatRooms = await resolveAndMapUserNamesFromQuery(chatRooms)
         res.status(200).json({
             errors: [],
             data: {
@@ -52,6 +52,8 @@ router.post("/", checkAuth, async (req, res) => {
 router.get("/:socketId", checkAuth, checkAdmin, async (req, res) => {
     try {
         let chatRoom = await ChatRoom.findOne({ socketId: req.params.socketId });
+        console.log(chatRoom)
+        console.log(!chatRoom)
         if (!chatRoom) {
             return res.status(404).json({
                 errors: [
@@ -62,6 +64,8 @@ router.get("/:socketId", checkAuth, checkAdmin, async (req, res) => {
                 data: null
             })
         }
+        console.log("was here")
+        chatRoom = await resolveAndMapUserNameFromQuery(chatRoom);
         res.status(200).json({
             errors: [],
             data: {

@@ -7,18 +7,18 @@
   import Loader from "../../common/Loader.svelte";
   import Button, { Label } from "@smui/button";
   import { navigate } from "svelte-navigator";
+  import { useParams } from "svelte-navigator";
 
+  const params = useParams();
   let chatRooms = [];
   let isLoadingChatRooms = true;
 
   onMount(async () => {
     const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-    socket.on("new-message", (message) => {
-
-    });
+    socket.on("new-message", (message) => {});
     const {
       data: { data },
-    } = await axios.get(`${SERVER_API_URL}/chatrooms/${}`, {
+    } = await axios.get(`${SERVER_API_URL}/chatrooms/${$params.socketId}`, {
       headers: {
         Authorization: `Bearer ${$user.token}`,
       },

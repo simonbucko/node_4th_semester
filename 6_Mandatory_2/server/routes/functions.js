@@ -53,7 +53,12 @@ export const resolveAndMapUserName = async (obj) => {
     return { ...obj, userName: name }
 }
 
-export const resolveAndMapUserNames = async (array) => {
+export const resolveAndMapUserNameFromQuery = async (obj) => {
+    const { name } = await User.findById(obj.userId)
+    return { ...obj._doc, userName: name }
+}
+
+export const resolveAndMapUserNamesFromQuery = async (array) => {
     if (array.length === 0) return array;
     const promises = array.map(async (item, index) => {
         const { name } = await User.findById(item.userId)
