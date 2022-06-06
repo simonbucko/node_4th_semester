@@ -8,7 +8,6 @@
   import Button, { Label } from "@smui/button";
   import { navigate } from "svelte-navigator";
   import IconButton from "@smui/icon-button";
-  import chatRoom from "../../../../server/models/chatRoom";
 
   let chatRooms = [];
   let isLoadingChatRooms = true;
