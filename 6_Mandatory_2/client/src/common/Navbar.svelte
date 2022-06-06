@@ -36,7 +36,7 @@
 
 <div class="navbar">
   <Link to={HOME} class="logoLink" style="display: flex; align-items: center;">
-    <img src="logo.png" alt="KEA Foot Shop" height="60px" />
+    <img src="/logo.png" alt="KEA Foot Shop" height="60px" />
   </Link>
   <div class="rightMenu">
     {#if $user.isAuthenticated && !$user.isLoading}
