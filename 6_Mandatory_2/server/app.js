@@ -38,16 +38,18 @@ mongoose.connect(process.env.MONGO_URI)
         app.use("/api/order", orderRouter)
         app.use("/api/chatrooms", chatRoomRouter)
         app.use("/test", (req, res) => { res.send("Backend is working and is ready for requests") })
+        //spin up the server
         const PORT = process.env.PORT || 8000
         app.listen(PORT, () => {
             console.log("Server is runnig on port: ", PORT)
             console.log("Socket server is running on port: ", SOCKET_PORT)
         })
-
+        //listen to chatroom changes
         const db = mongoose.connection;
         const collection = db.collection('chatrooms');
         const changeStream = collection.watch();
         changeStream.on('change', next => {
+            console.log(next)
             switch (next.operationType) {
                 case 'insert': {
                     const { fullDocument: chatRoom } = next

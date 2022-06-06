@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { checkAdmin, checkAuth } from "../middleware/index.js";
 import ChatRoom from "../models/chatRoom.js"
+import { resolveAndMapUserName } from "./functions.js"
 
 const router = Router();
 
 router.get("/", checkAuth, checkAdmin, async (req, res) => {
     try {
-        const chatRooms = await ChatRoom.find();
+        let chatRooms = await ChatRoom.find()
+        chatRooms = await resolveAndMapUserName(chatRooms)
         res.status(200).json({
             errors: [],
             data: {
@@ -47,7 +49,7 @@ router.post("/", checkAuth, async (req, res) => {
     }
 })
 
-//TODO:finish this 
+//TODO:finish this
 router.get("/:productId", async (req, res) => {
     try {
         const product = await Product.findById(req.params.productId);

@@ -2,7 +2,12 @@ import mongoose from "mongoose"
 const { Schema } = mongoose;
 
 const chatRoom = new Schema({
-    customerId: {
+    category: {
+        type: String,
+        trim: true,
+        required: true
+    },
+    userId: {
         type: String,
         trim: true,
         required: true

@@ -1,6 +1,7 @@
 import JWT from "jsonwebtoken"
 import Order from "../models/order.js"
 import Product from "../models/product.js"
+import User from "../models/user.js"
 
 
 export const respondWithUser = async (res, status, user, tokenExpirecy = 1000000) => {
@@ -30,7 +31,6 @@ export const respondWithUser = async (res, status, user, tokenExpirecy = 1000000
 const getAllUsersOrders = async (userId) => {
     let orders = await Order.find({ userId })
     if (orders.length === 0) return orders;
-    console.log("starting")
     const promises = orders.map(async (order) => {
         const promises = order.products.map(async ({ productId, quantity }) => {
             const { name, imgUrl, price, description } = await Product.findById(productId)
@@ -44,6 +44,15 @@ const getAllUsersOrders = async (userId) => {
             }
         })
         return await Promise.all(promises)
+    })
+    return await Promise.all(promises)
+}
+
+export const resolveAndMapUserName = async (array) => {
+    if (array.length === 0) return array;
+    const promises = array.map(async (item, index) => {
+        const { name } = await User.findById(item.userId)
+        return { ...item._doc, userName: name }
     })
     return await Promise.all(promises)
 }
