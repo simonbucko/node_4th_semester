@@ -7,7 +7,7 @@
   import Loader from "../../common/Loader.svelte";
   import Button, { Label } from "@smui/button";
   import { navigate } from "svelte-navigator";
-  import IconButton from "@smui/icon-button";
+  import { CHAT_ROOM } from "../../routing/constants";
 
   let chatRooms = [];
   let isLoadingChatRooms = true;
@@ -50,7 +50,7 @@
               <p>Category: {chatRoom.category}</p>
               <Button
                 variant="raised"
-                on:click={() => navigate(`${PRODUCT}/${productId}`)}
+                on:click={() => navigate(`${CHAT_ROOM}/${chatRoom.socketId}`)}
               >
                 <Label>Reply</Label>
               </Button>

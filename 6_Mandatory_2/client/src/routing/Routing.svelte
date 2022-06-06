@@ -3,6 +3,7 @@
   import Navbar from "../common/Navbar.svelte";
   import AddProduct from "../pages/addProduct/AddProduct.svelte";
   import Chatrooms from "../pages/chatrooms/Chatrooms.svelte";
+  import Chatroom from "../pages/chatroom/Chatroom.svelte";
   import Checkout from "../pages/checkout/Checkout.svelte";
   import Home from "../pages/home/Home.svelte";
   import Login from "../pages/login/Login.svelte";
@@ -24,6 +25,9 @@
   </Route>
   <AdminRoute path={ROUTES.CHAT_ROOMS} let:location>
     <Chatrooms />
+  </AdminRoute>
+  <AdminRoute path="{ROUTES.CHAT_ROOM}/:socketId" let:location>
+    <Chatroom />
   </AdminRoute>
   <AdminRoute path={ROUTES.ADD_PRODUCT} let:location>
     <AddProduct />

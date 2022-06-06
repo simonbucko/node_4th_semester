@@ -28,7 +28,7 @@ const registerChangeStream = (io, mongoose) => {
     const collection = db.collection('chatrooms');
     const changeStream = collection.watch();
     changeStream.on('change', async (next) => {
-        // console.log(next)
+        // console.log(next) 
         switch (next.operationType) {
             case 'insert': {
                 let { fullDocument: chatRoom } = next

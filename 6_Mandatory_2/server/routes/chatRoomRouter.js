@@ -49,15 +49,14 @@ router.post("/", checkAuth, async (req, res) => {
     }
 })
 
-//TODO:finish this
-router.get("/:productId", async (req, res) => {
+router.get("/:socketId", checkAuth, checkAdmin, async (req, res) => {
     try {
-        const product = await Product.findById(req.params.productId);
-        if (!product) {
+        let chatRoom = await ChatRoom.findOne({ socketId: req.params.socketId });
+        if (!chatRoom) {
             return res.status(404).json({
                 errors: [
                     {
-                        msg: "Product not found"
+                        msg: "Chat room not found"
                     }
                 ],
                 data: null
@@ -66,14 +65,14 @@ router.get("/:productId", async (req, res) => {
         res.status(200).json({
             errors: [],
             data: {
-                product
+                chatRoom
             }
         })
     } catch (error) {
         res.status(404).json({
             errors: [
                 {
-                    msg: "Product not found"
+                    msg: "Chat room not found"
                 }
             ],
             data: null
