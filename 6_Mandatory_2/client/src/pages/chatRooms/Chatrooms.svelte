@@ -34,8 +34,8 @@
       <div class="itemsWrapper">
         {#each chatRooms as chatRoom}
           <div class="card">
-            <h5>Custorer: {chatRoom.userName}</h5>
-            <h5>Category: {chatRoom.category}</h5>
+            <h3>Custorer: {chatRoom.userName}</h3>
+            <p>Category: {chatRoom.category}</p>
           </div>
         {/each}
       </div>
