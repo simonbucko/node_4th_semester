@@ -1,6 +1,9 @@
 :root {
 	--success-color: #4aed74;
 	--secondary-color: #8a4fff;
+	--bright-color: white;
+	--primary-color: #e3047d;
+	--error-color: #ff5366;
 	--blur: 10px;
   }
 

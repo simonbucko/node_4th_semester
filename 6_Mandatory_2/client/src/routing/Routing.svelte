@@ -13,6 +13,7 @@
   import AdminRoute from "./AdminRoute.svelte";
   import * as ROUTES from "./constants";
   import PrivateRoute from "./PrivateRoute.svelte";
+  import SupportWindow from "../common/SupportWindow.svelte";
 </script>
 
 <Router primary={false}>
@@ -45,3 +46,4 @@
     <MyOrders />
   </PrivateRoute>
 </Router>
+<SupportWindow />

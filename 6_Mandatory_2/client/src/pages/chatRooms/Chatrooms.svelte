@@ -12,8 +12,6 @@
   let chatRooms = [];
   let isLoadingChatRooms = true;
 
-  console.log("was here", chatRooms);
-
   onMount(async () => {
     //set up sockets and prevent created new one on each page render
     if (!$chatRoomsSocket.isSet) {
