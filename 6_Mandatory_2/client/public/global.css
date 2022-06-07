@@ -25,5 +25,9 @@ html, body {
 	background-color: var(--success-color);
 }
 
+.color-bright {
+    color: white !important;
+  }
+
 
 

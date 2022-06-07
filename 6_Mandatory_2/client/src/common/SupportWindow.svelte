@@ -3,8 +3,9 @@
   import { onMount } from "svelte";
   import { SERVER_SOCKET_URL } from "./constants";
   import { chatRoomsSocket } from "../store/store";
+  import IconButton from "@smui/icon-button";
 
-  const isSupportWindowOpen = false;
+  let isSupportWindowOpen = false;
 
   onMount(async () => {});
 
@@ -17,25 +18,41 @@
   <h4>Can we help you?</h4>
 </div>
 
-{#if isSupportWindowOpen}
+{#if isSupportWindowOpen || 1}
   <div class="supportWindow">
-    <div>Support</div>
-    <div>This is body</div>
+    <div class="actionButtons">
+      <IconButton class="material-icons color-bright">minimize</IconButton>
+      <IconButton class="material-icons color-bright">close</IconButton>
+    </div>
+    <h4 class="windowTitle">Support</h4>
+    <div class="windowBody">This is body</div>
   </div>
 {/if}
 
 <style>
   .supportWindow {
     position: fixed;
-    right: 0;
-    bottom: 0;
+    right: 16px;
+    bottom: 16px;
     z-index: 1500;
+    width: 400px;
+    height: 450px;
+    background-color: var(--bright-color);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 12px;
+    overflow: hidden;
   }
-  /* .wrapper {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  } */
+  .actionButtons {
+    position: absolute;
+    right: 0;
+    top: -4px;
+  }
+  .windowTitle {
+    background-color: var(--primary-color);
+    text-align: center;
+    color: var(--bright-color);
+    padding: 8px 0;
+  }
   .chip {
     position: fixed;
     bottom: 32px;
@@ -53,7 +70,8 @@
   .chip:hover {
     transform: translateY(-10px);
   }
-  h4 {
+  h4,
+  h5 {
     margin: 0;
   }
 </style>
