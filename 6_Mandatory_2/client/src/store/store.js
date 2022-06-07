@@ -10,6 +10,13 @@ export const defaultChatRoomsSocket = {
     socket: null
 }
 
+export const defaultChatRoomSocket = {
+    isSet: false,
+    socket: null
+}
+
 export const user = writable(defaultUser);
+
+export const chatRoomSocket = writable(defaultChatRoomsSocket)
 
 export const chatRoomsSocket = writable(defaultChatRoomsSocket)

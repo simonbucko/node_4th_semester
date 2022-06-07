@@ -13,12 +13,22 @@ const socketServer = (socketPort, mongoose) => {
 
 }
 
-const registerChatRoomsSocket = (io) => {
-    io.of("/socket/chatrooms").on("connection", (socket) => {
-        console.log("socket.io: User connected: ", socket.id);
+const registerChatRoomSocket = (io) => {
+    io.of("/socket/chatroom").on("connection", (socket) => {
+        console.log("socket.io, /chatrooom: User connected: ", socket.id);
 
         socket.on("disconnect", () => {
-            console.log("socket.io: User disconnected: ", socket.id);
+            console.log("socket.io, /chatroom: User disconnected: ", socket.id);
+        });
+    });
+}
+
+const registerChatRoomsSocket = (io) => {
+    io.of("/socket/chatrooms").on("connection", (socket) => {
+        console.log("socket.io, /chatrooms: User connected: ", socket.id);
+
+        socket.on("disconnect", () => {
+            console.log("socket.io, /chatroooms: User disconnected: ", socket.id);
         });
     });
 }
@@ -36,6 +46,7 @@ const registerChangeStream = (io, mongoose) => {
                 io.of("/socket/chatrooms").emit("new-active-chat-room", chatRoom)
                 break;
             }
+            //TODO: also listen for updates on hasUnreadMessages
             default: {
 
                 break;
