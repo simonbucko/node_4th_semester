@@ -4,8 +4,12 @@
   import { SERVER_SOCKET_URL } from "./constants";
   import { chatRoomsSocket } from "../store/store";
   import IconButton from "@smui/icon-button";
+  import Select, { Option } from "@smui/select";
+  import Button, { Label } from "@smui/button";
 
   let isSupportWindowOpen = false;
+  let category = "";
+  const OPTIONS = ["Product", "Delivery", "Other"];
 
   onMount(async () => {});
 
@@ -18,14 +22,42 @@
   <h4>Can we help you?</h4>
 </div>
 
-{#if isSupportWindowOpen || 1}
+{#if isSupportWindowOpen}
   <div class="supportWindow">
     <div class="actionButtons">
-      <IconButton class="material-icons color-bright">minimize</IconButton>
-      <IconButton class="material-icons color-bright">close</IconButton>
+      <IconButton
+        class="material-icons color-bright"
+        on:click={handleSupportWindowOpen}>close</IconButton
+      >
     </div>
     <h4 class="windowTitle">Support</h4>
-    <div class="windowBody">This is body</div>
+    <div class="windowBody">
+      <!-- TODO:make div here to wrap this up -->
+      <h4>What do you need help with?</h4>
+      <p>
+        Before you can talk to one of our supporters, we need know, what do you
+        need help with, so we can connect you with correct person
+      </p>
+      <Select
+        variant="outlined"
+        bind:value={category}
+        label="Category"
+        class="fullWidth"
+      >
+        <Option value="" />
+        {#each OPTIONS as option}
+          <Option value={option}>{option}</Option>
+        {/each}
+      </Select>
+      <Button
+        variant="raised"
+        type="submit"
+        style="width: 100%; margin-top: 16px"
+        disabled={category === ""}
+      >
+        <Label>Continue</Label>
+      </Button>
+    </div>
   </div>
 {/if}
 
@@ -52,6 +84,10 @@
     text-align: center;
     color: var(--bright-color);
     padding: 8px 0;
+  }
+  .windowBody {
+    padding: 16px;
+    height: calc(100% - 37px);
   }
   .chip {
     position: fixed;

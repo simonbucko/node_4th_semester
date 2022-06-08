@@ -27,7 +27,11 @@ html, body {
 
 .color-bright {
     color: white !important;
-  }
+}
+
+.fullWidth{
+	width: 100%;
+}
 
 
 

@@ -8,7 +8,7 @@ import { checkAuth } from "../middleware/index.js"
 
 
 router.post("/signup", body("email").isEmail().withMessage("The email is invalid"), body("password").isLength({ min: 5 }).withMessage("The password should have at least 5 characters"), body("name").isLength(2).withMessage("The name should have at least 2 characters"), async (req, res) => {
-    //returns array of errors
+    //returns array of errors 
     const validationsErrors = validationResult(req)
     if (!validationsErrors.isEmpty()) {
         const errors = validationsErrors.array().map(error => ({

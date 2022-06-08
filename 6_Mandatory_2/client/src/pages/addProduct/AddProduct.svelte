@@ -84,7 +84,10 @@
         variant="raised"
         type="submit"
         style="width: 100%; margin-top: 16px"
-        disabled={false}
+        disabled={name === "" ||
+          imgUrl === "" ||
+          price === "" ||
+          description === ""}
       >
         <Label>Add Product</Label>
       </Button>
