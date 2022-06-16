@@ -8,6 +8,7 @@
   import Button, { Label } from "@smui/button";
 
   let isSupportWindowOpen = false;
+  let isCategoryAnswered = false;
   let category = "";
   const OPTIONS = ["Product", "Delivery", "Other"];
 
@@ -15,6 +16,11 @@
 
   const handleSupportWindowOpen = () => {
     isSupportWindowOpen = !isSupportWindowOpen;
+  };
+
+  const handleContinue = () => {
+    console.log("hello");
+    isCategoryAnswered = true;
   };
 </script>
 
@@ -32,31 +38,37 @@
     </div>
     <h4 class="windowTitle">Support</h4>
     <div class="windowBody">
-      <!-- TODO:make div here to wrap this up -->
-      <h4>What do you need help with?</h4>
-      <p>
-        Before you can talk to one of our supporters, we need know, what do you
-        need help with, so we can connect you with correct person
-      </p>
-      <Select
-        variant="outlined"
-        bind:value={category}
-        label="Category"
-        class="fullWidth"
-      >
-        <Option value="" />
-        {#each OPTIONS as option}
-          <Option value={option}>{option}</Option>
-        {/each}
-      </Select>
-      <Button
-        variant="raised"
-        type="submit"
-        style="width: 100%; margin-top: 16px"
-        disabled={category === ""}
-      >
-        <Label>Continue</Label>
-      </Button>
+      {#if !isCategoryAnswered}
+        <div>
+          <h4>What do you need help with?</h4>
+          <p>
+            Before you can talk to one of our supporters, we need know, what do
+            you need help with, so we can connect you with correct person
+          </p>
+          <Select
+            variant="outlined"
+            bind:value={category}
+            label="Category"
+            class="fullWidth"
+          >
+            <Option value="" />
+            {#each OPTIONS as option}
+              <Option value={option}>{option}</Option>
+            {/each}
+          </Select>
+          <Button
+            variant="raised"
+            type="submit"
+            style="width: 100%; margin-top: 16px"
+            disabled={category === ""}
+            on:click={handleContinue}
+          >
+            <Label>Continue</Label>
+          </Button>
+        </div>
+      {:else}
+        <div>this is chat</div>
+      {/if}
     </div>
   </div>
 {/if}
