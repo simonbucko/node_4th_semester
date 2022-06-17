@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import { resolveAndMapUserName } from "./routes/functions.js";
+// import { Chatroom } from ""
 
 
 const socketServer = (socketPort, mongoose) => {
@@ -18,8 +19,8 @@ const registerChatRoomSocket = (io) => {
     io.of("/socket/chatroom").on("connection", (socket) => {
         console.log("socket.io, /chatrooom: User connected: ", socket.id);
 
-        socket.on("newChatroom", () => {
-            console.log("we have haha")
+        socket.on("newChatroom", (category, userId) => {
+            console.log(category, userId)
             // TODO: create a new chatroom
         })
 

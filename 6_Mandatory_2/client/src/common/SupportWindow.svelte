@@ -6,12 +6,15 @@
   import Select, { Option } from "@smui/select";
   import Button, { Label } from "@smui/button";
   import { user } from "../store/store";
+  import Textfield from "@smui/textfield";
 
   let isSupportWindowOpen = false;
   let isCategoryAnswered = false;
   let category = "";
   const OPTIONS = ["Product", "Delivery", "Other"];
   let isUserAuthenticated = false;
+  let messages = [];
+  let inputMessage = "";
 
   $: if (!$user.isLoading) {
     isUserAuthenticated = $user.isAuthenticated;
@@ -26,9 +29,14 @@
   const handleContinue = () => {
     isCategoryAnswered = true;
     const socket = io(`${SERVER_SOCKET_URL}/chatroom`);
-
-    socket.emit("newChatroom", category);
+    socket.emit("newChatroom", category, $user.id);
   };
+
+  const handleSubmit = () => {
+    console.log("hellow there");
+  };
+
+  const handleFirstMessage = () => {};
 </script>
 
 {#if isUserAuthenticated}
@@ -76,7 +84,23 @@
               </Button>
             </div>
           {:else}
-            <div>this is chat</div>
+            <div class="chatWrapper">
+              <div class="messagesWrapper" />
+              <form class="inputWrapper" on:submit={handleSubmit}>
+                <Textfield
+                  variant="outlined"
+                  bind:value={inputMessage}
+                  style="height: 100%"
+                />
+                <Button
+                  variant="raised"
+                  type="submit"
+                  disabled={inputMessage === ""}
+                >
+                  <Label>Send</Label>
+                </Button>
+              </form>
+            </div>
           {/if}
         </div>
       </div>
@@ -110,7 +134,7 @@
   }
   .windowBody {
     padding: 16px;
-    height: calc(100% - 37px);
+    height: calc(100% - 70px);
   }
   .chip {
     position: fixed;
@@ -132,5 +156,19 @@
   h4,
   h5 {
     margin: 0;
+  }
+
+  .chatWrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .messagesWrapper {
+    flex: 1;
+  }
+
+  .inputWrapper {
+    height: 30px;
   }
 </style>
