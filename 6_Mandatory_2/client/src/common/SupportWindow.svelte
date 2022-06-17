@@ -15,6 +15,7 @@
   let isUserAuthenticated = false;
   let messages = [];
   let inputMessage = "";
+  let anchor;
 
   $: if (!$user.isLoading) {
     isUserAuthenticated = $user.isAuthenticated;
@@ -32,11 +33,29 @@
     socket.emit("newChatroom", category, $user.id);
   };
 
-  const handleSubmit = () => {
-    console.log("hellow there");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(!messages.length);
+    if (!messages.length) handleFirstMessage();
+    createMessageObject();
+    messages = [...messages, createMessageObject(inputMessage, "user")];
+    //small interval to render new messages first
+    setTimeout(() => anchor.scrollIntoView(), 100);
+    inputMessage = "";
   };
 
-  const handleFirstMessage = () => {};
+  const createMessageObject = (text, sender) => {
+    const unixEpochTime = Math.round(new Date().getTime() / 1000).toString();
+    return {
+      timestamp: unixEpochTime,
+      text,
+      sender,
+    };
+  };
+
+  const handleFirstMessage = () => {
+    //   TODO: make a request to create a new room
+  };
 </script>
 
 {#if isUserAuthenticated}
@@ -85,12 +104,18 @@
             </div>
           {:else}
             <div class="chatWrapper">
-              <div class="messagesWrapper" />
+              <div class="messagesWrapper">
+                {#each messages as message}
+                  <div class="message">{message.text}</div>
+                {/each}
+                <div bind:this={anchor} />
+              </div>
               <form class="inputWrapper" on:submit={handleSubmit}>
                 <Textfield
                   variant="outlined"
                   bind:value={inputMessage}
-                  style="height: 100%"
+                  style="height: 100%; flex: 1"
+                  class="input"
                 />
                 <Button
                   variant="raised"
@@ -153,8 +178,7 @@
   .chip:hover {
     transform: translateY(-10px);
   }
-  h4,
-  h5 {
+  h4 {
     margin: 0;
   }
 
@@ -166,9 +190,11 @@
 
   .messagesWrapper {
     flex: 1;
+    overflow-y: auto;
   }
 
   .inputWrapper {
-    height: 30px;
+    display: flex;
+    margin-top: 8px;
   }
 </style>
