@@ -2,15 +2,20 @@
   import io from "socket.io-client";
   import { onMount } from "svelte";
   import { SERVER_SOCKET_URL } from "./constants";
-  import { chatRoomsSocket } from "../store/store";
   import IconButton from "@smui/icon-button";
   import Select, { Option } from "@smui/select";
   import Button, { Label } from "@smui/button";
+  import { user } from "../store/store";
 
   let isSupportWindowOpen = false;
   let isCategoryAnswered = false;
   let category = "";
   const OPTIONS = ["Product", "Delivery", "Other"];
+  let isUserAuthenticated = false;
+
+  $: if (!$user.isLoading) {
+    isUserAuthenticated = $user.isAuthenticated;
+  }
 
   onMount(async () => {});
 
@@ -19,57 +24,63 @@
   };
 
   const handleContinue = () => {
-    console.log("hello");
     isCategoryAnswered = true;
+    const socket = io(`${SERVER_SOCKET_URL}/chatroom`);
+
+    socket.emit("newChatroom", category);
   };
 </script>
 
-<div class="chip" on:click={handleSupportWindowOpen}>
-  <h4>Can we help you?</h4>
-</div>
+{#if isUserAuthenticated}
+  <div>
+    <div class="chip" on:click={handleSupportWindowOpen}>
+      <h4>Can we help you?</h4>
+    </div>
 
-{#if isSupportWindowOpen}
-  <div class="supportWindow">
-    <div class="actionButtons">
-      <IconButton
-        class="material-icons color-bright"
-        on:click={handleSupportWindowOpen}>close</IconButton
-      >
-    </div>
-    <h4 class="windowTitle">Support</h4>
-    <div class="windowBody">
-      {#if !isCategoryAnswered}
-        <div>
-          <h4>What do you need help with?</h4>
-          <p>
-            Before you can talk to one of our supporters, we need know, what do
-            you need help with, so we can connect you with correct person
-          </p>
-          <Select
-            variant="outlined"
-            bind:value={category}
-            label="Category"
-            class="fullWidth"
+    {#if isSupportWindowOpen}
+      <div class="supportWindow">
+        <div class="actionButtons">
+          <IconButton
+            class="material-icons color-bright"
+            on:click={handleSupportWindowOpen}>close</IconButton
           >
-            <Option value="" />
-            {#each OPTIONS as option}
-              <Option value={option}>{option}</Option>
-            {/each}
-          </Select>
-          <Button
-            variant="raised"
-            type="submit"
-            style="width: 100%; margin-top: 16px"
-            disabled={category === ""}
-            on:click={handleContinue}
-          >
-            <Label>Continue</Label>
-          </Button>
         </div>
-      {:else}
-        <div>this is chat</div>
-      {/if}
-    </div>
+        <h4 class="windowTitle">Support</h4>
+        <div class="windowBody">
+          {#if !isCategoryAnswered}
+            <div>
+              <h4>What do you need help with?</h4>
+              <p>
+                Before you can talk to one of our supporters, we need know, what
+                do you need help with, so we can connect you with correct person
+              </p>
+              <Select
+                variant="outlined"
+                bind:value={category}
+                label="Category"
+                class="fullWidth"
+              >
+                <Option value="" />
+                {#each OPTIONS as option}
+                  <Option value={option}>{option}</Option>
+                {/each}
+              </Select>
+              <Button
+                variant="raised"
+                type="submit"
+                style="width: 100%; margin-top: 16px"
+                disabled={category === ""}
+                on:click={handleContinue}
+              >
+                <Label>Continue</Label>
+              </Button>
+            </div>
+          {:else}
+            <div>this is chat</div>
+          {/if}
+        </div>
+      </div>
+    {/if}
   </div>
 {/if}
 

@@ -8,6 +8,7 @@ const socketServer = (socketPort, mongoose) => {
             origin: ['http://localhost:8080']
         }
     });
+    registerChatRoomSocket(io)
     registerChatRoomsSocket(io)
     registerChangeStream(io, mongoose)
 
@@ -16,6 +17,11 @@ const socketServer = (socketPort, mongoose) => {
 const registerChatRoomSocket = (io) => {
     io.of("/socket/chatroom").on("connection", (socket) => {
         console.log("socket.io, /chatrooom: User connected: ", socket.id);
+
+        socket.on("newChatroom", () => {
+            console.log("we have haha")
+            // TODO: create a new chatroom
+        })
 
         socket.on("disconnect", () => {
             console.log("socket.io, /chatroom: User disconnected: ", socket.id);
