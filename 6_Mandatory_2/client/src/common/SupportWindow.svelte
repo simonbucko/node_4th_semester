@@ -36,11 +36,15 @@
     e.preventDefault();
     const newMessage = createMessageObject(inputMessage, "user");
     if (!messages.length) handleFirstMessage();
-    //TODO: emit this to everyone
+    emitMessage(newMessage);
     messages = [...messages, newMessage];
     //small interval to render new messages first before scrolling
     setTimeout(() => anchor.scrollIntoView(), 100);
     inputMessage = "";
+  };
+
+  const emitMessage = (message) => {
+    socket.emit("newMessage", message);
   };
 
   const createMessageObject = (text, sender) => {
@@ -54,6 +58,9 @@
 
   const handleFirstMessage = () => {
     socket = io(`${SERVER_SOCKET_URL}/chatroom`);
+    socket.on("newMessage", (message) => {
+      console.log(message);
+    });
     socket.emit("newChatroom", {
       category,
       userId: $user.id,

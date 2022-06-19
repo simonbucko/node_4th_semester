@@ -11,17 +11,16 @@ const socketServer = (socketPort, mongoose) => {
     registerChatRoomSocket(io)
     registerChatRoomsSocket(io)
     registerChangeStream(io, mongoose)
-
 }
 
 const registerChatRoomSocket = (io) => {
     io.of("/socket/chatroom").on("connection", (socket) => {
         console.log("socket.io, /chatrooom: User connected: ", socket.id);
 
-        socket.on("newChatroom", ({ category, userId }) => {
-            //create a new chat room
+        socket.on("newChatroom", async ({ category, userId }) => {
             try {
-                ChatRoom.create({
+                // TODO: uncomment this
+                await ChatRoom.create({
                     category,
                     userId,
                     socketId: socket.id,
@@ -33,6 +32,22 @@ const registerChatRoomSocket = (io) => {
             } catch (error) {
                 console.log(error)
             }
+        })
+
+        socket.on("newMessage", async (message) => {
+            console.log(message, socket.id)
+            try {
+                ChatRoom.findOneAndUpdate(
+                    { roomId: socket.id },
+                    { $push: { messages: message } },
+                    (error, success) => {
+                        console.log(error, "error")
+                        console.log(success, "success")
+                    });
+            } catch (error) {
+                console.log(error)
+            }
+            socket.to(socket.id).emit("newMessage", message)
         })
 
         socket.on("disconnect", () => {
