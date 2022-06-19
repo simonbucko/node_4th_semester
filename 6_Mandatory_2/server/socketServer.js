@@ -1,7 +1,6 @@
 import { Server } from "socket.io";
 import { resolveAndMapUserName } from "./routes/functions.js";
-// import { Chatroom } from "" 
-
+import ChatRoom from "./models/chatRoom.js"
 
 const socketServer = (socketPort, mongoose) => {
     const io = new Server(socketPort, {
@@ -20,8 +19,20 @@ const registerChatRoomSocket = (io) => {
         console.log("socket.io, /chatrooom: User connected: ", socket.id);
 
         socket.on("newChatroom", ({ category, userId }) => {
-            console.log(category, userId, socket.id)
-            // TODO: create a new chatroom
+            //create a new chat room
+            try {
+                ChatRoom.create({
+                    category,
+                    userId,
+                    socketId: socket.id,
+                    roomId: socket.id,
+                    messages: [
+                    ],
+                    hasUnreadMessages: true
+                })
+            } catch (error) {
+                console.log(error)
+            }
         })
 
         socket.on("disconnect", () => {
@@ -55,7 +66,6 @@ const registerChangeStream = (io, mongoose) => {
             }
             //TODO: also listen for updates on hasUnreadMessages
             default: {
-
                 break;
             }
         }

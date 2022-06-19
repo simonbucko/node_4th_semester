@@ -16,6 +16,7 @@
   let messages = [];
   let inputMessage = "";
   let anchor;
+  let socket;
 
   $: if (!$user.isLoading) {
     isUserAuthenticated = $user.isAuthenticated;
@@ -29,17 +30,15 @@
 
   const handleContinue = () => {
     isCategoryAnswered = true;
-    const socket = io(`${SERVER_SOCKET_URL}/chatroom`);
-    socket.emit("newChatroom", category, $user.id);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(!messages.length);
+    const newMessage = createMessageObject(inputMessage, "user");
     if (!messages.length) handleFirstMessage();
-    createMessageObject();
-    messages = [...messages, createMessageObject(inputMessage, "user")];
-    //small interval to render new messages first
+    //TODO: emit this to everyone
+    messages = [...messages, newMessage];
+    //small interval to render new messages first before scrolling
     setTimeout(() => anchor.scrollIntoView(), 100);
     inputMessage = "";
   };
@@ -54,7 +53,11 @@
   };
 
   const handleFirstMessage = () => {
-    //   TODO: make a request to create a new room
+    socket = io(`${SERVER_SOCKET_URL}/chatroom`);
+    socket.emit("newChatroom", {
+      category,
+      userId: $user.id,
+    });
   };
 </script>
 
