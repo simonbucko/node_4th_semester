@@ -19,8 +19,8 @@ const registerChatRoomSocket = (io) => {
     io.of("/socket/chatroom").on("connection", (socket) => {
         console.log("socket.io, /chatrooom: User connected: ", socket.id);
 
-        socket.on("newChatroom", (category, userId) => {
-            console.log(category, userId)
+        socket.on("newChatroom", ({ category, userId }) => {
+            console.log(category, userId, socket.id)
             // TODO: create a new chatroom
         })
 
