@@ -41,13 +41,18 @@ const registerChatRoomSocket = (io) => {
                     { roomId: socket.id },
                     { $push: { messages: message } },
                     (error, success) => {
-                        console.log(error, "error")
-                        console.log(success, "success")
+                        // console.log(error, "error")
+                        // console.log(success, "success")
                     });
             } catch (error) {
                 console.log(error)
             }
-            socket.to(socket.id).emit("newMessage", message)
+            io.of("/socket/chatroom").to(socket.id).emit("newMessage", message)
+        })
+
+        socket.on("joinRoom", (roomId) => {
+            console.log(`${socket.id} user joined ${roomId} room`)
+            socket.join(roomId)
         })
 
         socket.on("disconnect", () => {

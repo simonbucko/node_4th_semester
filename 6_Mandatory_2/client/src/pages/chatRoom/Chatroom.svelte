@@ -6,28 +6,29 @@
   import { user, chatRoomSocket } from "../../store/store";
   import Loader from "../../common/Loader.svelte";
   import Button, { Label } from "@smui/button";
-  import { navigate } from "svelte-navigator";
   import { useParams } from "svelte-navigator";
 
   const params = useParams();
   let chatRoom = null;
   let isLoadingChatRoom = true;
+  let socket;
 
   onMount(async () => {
-    // set up socket
     //set up sockets and prevent created new one on each page render
     if (!$chatRoomSocket.isSet) {
-      const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-      socket.on("new-active-chat-room", (chatRoom) => {
-        chatRooms = [chatRoom, ...chatRooms];
-      });
+      socket = io(`${SERVER_SOCKET_URL}/chatroom`);
       chatRoomSocket.set({ ...$chatRoomSocket, isSet: true, socket });
     } else {
-      const socket = $chatRoomSocket.socket;
-      socket.on("new-active-chat-room", (chatRoom) => {
-        chatRooms = [chatRoom, ...chatRooms];
-      });
+      socket = $chatRoomSocket.socket;
     }
+    socket.on("connect", () => {
+      socket.on("newMessage", (message) => {
+        console.log(message);
+        //push message to the messages
+      });
+    });
+
+    socket.emit("joinRoom", $params.socketId);
 
     //get chatroom data
     const {
@@ -53,7 +54,7 @@
       <p>Category: {chatRoom.category}</p>
       <div class="chatWrapper">
         {#each chatRoom.messages as message}
-          <p>{message.sender}: {message.text}</p>
+          <p>{message.text}</p>
         {/each}
       </div>
     {:else}
