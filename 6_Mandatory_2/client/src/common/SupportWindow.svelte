@@ -1,12 +1,13 @@
 <script>
   import io from "socket.io-client";
   import { onMount } from "svelte";
-  import { SERVER_SOCKET_URL } from "./constants";
+  import { SERVER_SOCKET_URL, SERVER_API_URL } from "./constants";
   import IconButton from "@smui/icon-button";
   import Select, { Option } from "@smui/select";
   import Button, { Label } from "@smui/button";
   import { user } from "../store/store";
   import Textfield from "@smui/textfield";
+  import axios from "axios";
 
   let isSupportWindowOpen = false;
   let isCategoryAnswered = false;
@@ -32,12 +33,16 @@
     isCategoryAnswered = true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newMessage = createMessageObject(inputMessage, "user");
-    if (!messages.length) handleFirstMessage();
-    emitMessage(newMessage);
-    messages = [...messages, newMessage];
+    if (!messages.length) handleFirstMessage(newMessage);
+    else handleSendMessage(newMessage);
+  };
+
+  const handleSendMessage = (message) => {
+    emitMessage(message);
+    messages = [...messages, message];
     //small interval to render new messages first before scrolling
     setTimeout(() => anchor.scrollIntoView(), 100);
     inputMessage = "";
@@ -56,14 +61,30 @@
     };
   };
 
-  const handleFirstMessage = () => {
+  const handleFirstMessage = (firstMessage) => {
     socket = io(`${SERVER_SOCKET_URL}/chatroom`);
-    socket.on("newMessage", (message) => {
-      console.log(message);
-    });
-    socket.emit("newChatroom", {
-      category,
-      userId: $user.id,
+    socket.on("connect", async () => {
+      socket.on("newMessage", (message) => {
+        if (message.sender === "user") return;
+        console.log(message);
+      });
+      await axios.post(
+        `${SERVER_API_URL}/chatrooms`,
+        {
+          category,
+          userId: $user.id,
+          socketId: socket.id,
+          roomId: socket.id,
+          messages: [],
+          hasUnreadMessages: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${$user.token}`,
+          },
+        }
+      );
+      handleSendMessage(firstMessage);
     });
   };
 </script>

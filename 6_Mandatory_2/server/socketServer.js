@@ -17,23 +17,6 @@ const registerChatRoomSocket = (io) => {
     io.of("/socket/chatroom").on("connection", (socket) => {
         console.log("socket.io, /chatrooom: User connected: ", socket.id);
 
-        socket.on("newChatroom", async ({ category, userId }) => {
-            try {
-                // TODO: uncomment this
-                await ChatRoom.create({
-                    category,
-                    userId,
-                    socketId: socket.id,
-                    roomId: socket.id,
-                    messages: [
-                    ],
-                    hasUnreadMessages: true
-                })
-            } catch (error) {
-                console.log(error)
-            }
-        })
-
         socket.on("newMessage", async (message) => {
             console.log(message, socket.id)
             try {

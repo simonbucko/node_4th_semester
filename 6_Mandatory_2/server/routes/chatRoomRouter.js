@@ -30,8 +30,7 @@ router.get("/", checkAuth, checkAdmin, async (req, res) => {
 
 router.post("/", checkAuth, async (req, res) => {
     try {
-        const unixEpochTime = (Math.round((new Date()).getTime() / 1000)).toString();
-        const newChatRoom = await ChatRoom.create(req.body)
+        await ChatRoom.create(req.body)
         res.status(201).json({
             errors: [],
             data: null
