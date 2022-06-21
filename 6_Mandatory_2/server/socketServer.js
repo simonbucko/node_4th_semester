@@ -17,11 +17,12 @@ const registerChatRoomSocket = (io) => {
     io.of("/socket/chatroom").on("connection", (socket) => {
         console.log("socket.io, /chatrooom: User connected: ", socket.id);
 
-        socket.on("newMessage", async (message) => {
-            console.log(message, socket.id)
+        socket.on("newMessage", async (message, roomId) => {
+            const currentRoomId = roomId || socket.id
+            console.log(message, socket.id, currentRoomId)
             try {
                 ChatRoom.findOneAndUpdate(
-                    { roomId: socket.id },
+                    { roomId: currentRoomId },
                     { $push: { messages: message } },
                     (error, success) => {
                         // console.log(error, "error")
@@ -30,7 +31,7 @@ const registerChatRoomSocket = (io) => {
             } catch (error) {
                 console.log(error)
             }
-            io.of("/socket/chatroom").to(socket.id).emit("newMessage", message)
+            io.of("/socket/chatroom").to(currentRoomId).emit("newMessage", message)
         })
 
         socket.on("joinRoom", (roomId) => {

@@ -12,6 +12,7 @@
 
   const params = useParams();
   let chatRoom = null;
+  let messages;
   let isLoadingChatRoom = true;
   let socket;
   let anchor;
@@ -27,8 +28,8 @@
     }
     socket.on("connect", () => {
       socket.on("newMessage", (message) => {
-        console.log(message);
-        //push message to the messages
+        if (message.sender === "support") return;
+        messages = [...messages, message];
       });
     });
 
@@ -43,14 +44,26 @@
       },
     });
     chatRoom = data.chatRoom;
+    messages = chatRoom.messages;
     isLoadingChatRoom = false;
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newMessage = createMessageObject(inputMessage, "user");
-    if (!messages.length) handleFirstMessage(newMessage);
-    else handleSendMessage(newMessage);
+    const newMessage = createMessageObject(inputMessage, "support");
+    handleSendMessage(newMessage);
+  };
+
+  const handleSendMessage = (message) => {
+    emitMessage(message);
+    messages = [...messages, message];
+    //small interval to render new messages first before scrolling
+    setTimeout(() => anchor.scrollIntoView(), 100);
+    inputMessage = "";
+  };
+
+  const emitMessage = (message) => {
+    socket.emit("newMessage", message, $params.socketId);
   };
 </script>
 
@@ -65,7 +78,7 @@
       <p>Category: {chatRoom.category}</p>
       <div class="chatWrapper">
         <div class="messagesWrapper">
-          {#each chatRoom.messages as message}
+          {#each messages as message}
             <div>{message.text}</div>
           {/each}
           <div bind:this={anchor} />
@@ -76,7 +89,6 @@
           variant="outlined"
           bind:value={inputMessage}
           style="height: 100%; flex: 1"
-          class="input"
         />
         <Button variant="raised" type="submit" disabled={inputMessage === ""}>
           <Label>Send</Label>
@@ -103,7 +115,7 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: 60%;
   }
 
   .messagesWrapper {
@@ -113,6 +125,6 @@
 
   .inputWrapper {
     display: flex;
-    margin-top: 8px;
+    height: 36px;
   }
 </style>

@@ -58,7 +58,7 @@
     socket.on("connect", async () => {
       socket.on("newMessage", (message) => {
         if (message.sender === "user") return;
-        console.log(message);
+        messages = [...messages, message];
       });
       await axios.post(
         `${SERVER_API_URL}/chatrooms`,
@@ -138,7 +138,6 @@
                   variant="outlined"
                   bind:value={inputMessage}
                   style="height: 100%; flex: 1"
-                  class="input"
                 />
                 <Button
                   variant="raised"
