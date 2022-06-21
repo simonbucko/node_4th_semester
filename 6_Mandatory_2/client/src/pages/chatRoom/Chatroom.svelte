@@ -7,11 +7,15 @@
   import Loader from "../../common/Loader.svelte";
   import Button, { Label } from "@smui/button";
   import { useParams } from "svelte-navigator";
+  import { createMessageObject } from "../../common/functions.js";
+  import Textfield from "@smui/textfield";
 
   const params = useParams();
   let chatRoom = null;
   let isLoadingChatRoom = true;
   let socket;
+  let anchor;
+  let inputMessage = "";
 
   onMount(async () => {
     //set up sockets and prevent created new one on each page render
@@ -41,6 +45,13 @@
     chatRoom = data.chatRoom;
     isLoadingChatRoom = false;
   });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const newMessage = createMessageObject(inputMessage, "user");
+    if (!messages.length) handleFirstMessage(newMessage);
+    else handleSendMessage(newMessage);
+  };
 </script>
 
 <main>
@@ -53,10 +64,24 @@
       <p>User's name: {chatRoom.userName}</p>
       <p>Category: {chatRoom.category}</p>
       <div class="chatWrapper">
-        {#each chatRoom.messages as message}
-          <p>{message.text}</p>
-        {/each}
+        <div class="messagesWrapper">
+          {#each chatRoom.messages as message}
+            <div>{message.text}</div>
+          {/each}
+          <div bind:this={anchor} />
+        </div>
       </div>
+      <form class="inputWrapper" on:submit={handleSubmit}>
+        <Textfield
+          variant="outlined"
+          bind:value={inputMessage}
+          style="height: 100%; flex: 1"
+          class="input"
+        />
+        <Button variant="raised" type="submit" disabled={inputMessage === ""}>
+          <Label>Send</Label>
+        </Button>
+      </form>
     {:else}
       <p>Requested chat is no longer active or it could not be found</p>
     {/if}
@@ -76,6 +101,18 @@
     border-radius: 12px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 16px;
-    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .messagesWrapper {
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .inputWrapper {
+    display: flex;
+    margin-top: 8px;
   }
 </style>

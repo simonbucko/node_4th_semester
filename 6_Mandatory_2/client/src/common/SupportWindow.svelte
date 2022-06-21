@@ -8,6 +8,7 @@
   import { user } from "../store/store";
   import Textfield from "@smui/textfield";
   import axios from "axios";
+  import { createMessageObject } from "../common/functions.js";
 
   let isSupportWindowOpen = false;
   let isCategoryAnswered = false;
@@ -50,15 +51,6 @@
 
   const emitMessage = (message) => {
     socket.emit("newMessage", message);
-  };
-
-  const createMessageObject = (text, sender) => {
-    const unixEpochTime = Math.round(new Date().getTime() / 1000).toString();
-    return {
-      timestamp: unixEpochTime,
-      text,
-      sender,
-    };
   };
 
   const handleFirstMessage = (firstMessage) => {
