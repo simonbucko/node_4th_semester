@@ -31,6 +31,9 @@ const registerChatRoomSocket = (io) => {
             } catch (error) {
                 console.log(error)
             }
+            var room = io.of("/socket/chatroom").adapter.rooms.get(currentRoomId);
+            // room is Set here
+            console.log(room.size);
             io.of("/socket/chatroom").to(currentRoomId).emit("newMessage", message)
         })
 
