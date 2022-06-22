@@ -17,6 +17,7 @@
   let socket;
   let anchor;
   let inputMessage = "";
+  let userHasDisconnected = false;
 
   onDestroy(() => {
     socket.emit("leaveRoom", $params.socketId);
@@ -29,26 +30,14 @@
       socket = io(`${SERVER_SOCKET_URL}/chatroom`);
       socket.on("connect", () => {
         chatRoomSocket.set({ ...$chatRoomSocket, isSet: true, socket });
-        socket.on("newMessage", (message) => {
-          if (message.sender === "support") return;
-          messages = [...messages, message];
-        });
-        socket.on("userDisconnected", () => {
-          console.log("user has disconnected");
-        });
+        setupSocketListeners();
       });
-      socket.emit("joinRoom", $params.socketId);
     } else {
       socket = $chatRoomSocket.socket;
-      socket.on("newMessage", (message) => {
-        if (message.sender === "support") return;
-        messages = [...messages, message];
-      });
-      socket.on("userDisconnected", () => {
-        console.log("user has disconnected");
-      });
+      setupSocketListeners();
     }
 
+    socket.emit("joinRoom", $params.socketId);
     //get chatroom data
     const {
       data: { data },
@@ -61,6 +50,16 @@
     messages = chatRoom.messages;
     isLoadingChatRoom = false;
   });
+
+  const setupSocketListeners = () => {
+    socket.on("newMessage", (message) => {
+      if (message.sender === "support") return;
+      messages = [...messages, message];
+    });
+    socket.on("userDisconnected", () => {
+      userHasDisconnected = true;
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -101,6 +100,11 @@
               {message.text}
             </div>
           {/each}
+          {#if userHasDisconnected}
+            <div class="disconnectedMessage">
+              User has disconnected. You can leave chat now.
+            </div>
+          {/if}
           <div bind:this={anchor} />
         </div>
       </div>
@@ -165,5 +169,9 @@
     align-self: flex-end;
     color: var(--bright-color);
     background-color: var(--primary-color);
+  }
+  .disconnectedMessage {
+    text-align: center;
+    color: gray;
   }
 </style>
