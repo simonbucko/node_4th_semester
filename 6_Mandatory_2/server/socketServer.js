@@ -33,8 +33,18 @@ const registerChatRoomSocket = (io) => {
             }
             var room = io.of("/socket/chatroom").adapter.rooms.get(currentRoomId);
             // room is of Set here
-            // TODO: if room size 1 make unread messages
-            console.log(room.size);
+            // it is only user that is connected
+            if (room.size === 1) {
+                try {
+                    ChatRoom.findOneAndUpdate(
+                        { roomId: currentRoomId },
+                        { $set: { hasUnreadMessages: true } }
+                    )
+                } catch (error) {
+                    console.log(error)
+                }
+
+            }
             io.of("/socket/chatroom").to(currentRoomId).emit("newMessage", message)
         })
 
@@ -49,7 +59,6 @@ const registerChatRoomSocket = (io) => {
         })
 
         socket.on("disconnect", () => {
-            // TODO: just inform users in that room that user has disconeccted 
             io.of("/socket/chatroom").to(socket.id).emit("userDisconnected")
             console.log("socket.io, /chatroom: User disconnected: ", socket.id);
         });

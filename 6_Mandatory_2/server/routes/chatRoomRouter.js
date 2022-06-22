@@ -94,5 +94,40 @@ router.delete("/", checkAuth, checkAdmin, async (req, res) => {
     }
 })
 
+router.patch("/:socketId/messages/read", checkAuth, checkAdmin, async (req, res) => {
+    try {
+        const chatRoom = await ChatRoom.findOneAndUpdate(
+            { roomId: req.params.socketId },
+            { $set: { hasUnreadMessages: false } }
+        );
+
+        if (!chatRoom) {
+            return res.status(404).json({
+                errors: [
+                    {
+                        msg: "Chat room not found"
+                    }
+                ],
+                data: null
+            })
+        }
+
+        res.status(200).json({
+            errors: [],
+            data: {
+            }
+        })
+    } catch (error) {
+        res.status(500).json({
+            errors: [
+                {
+                    msg: error
+                }
+            ],
+            data: null
+        })
+    }
+})
+
 
 export default router

@@ -36,8 +36,8 @@
       socket = $chatRoomSocket.socket;
       setupSocketListeners();
     }
-
     socket.emit("joinRoom", $params.socketId);
+
     //get chatroom data
     const {
       data: { data },
@@ -46,6 +46,18 @@
         Authorization: `Bearer ${$user.token}`,
       },
     });
+
+    //mark messages read
+    await axios.patch(
+      `${SERVER_API_URL}/chatrooms/${$params.socketId}/messages/read`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${$user.token}`,
+        },
+      }
+    );
+
     chatRoom = data.chatRoom;
     messages = chatRoom.messages;
     isLoadingChatRoom = false;
@@ -114,7 +126,11 @@
           bind:value={inputMessage}
           style="height: 100%; flex: 1"
         />
-        <Button variant="raised" type="submit" disabled={inputMessage === ""}>
+        <Button
+          variant="raised"
+          type="submit"
+          disabled={inputMessage === "" || userHasDisconnected}
+        >
           <Label>Send</Label>
         </Button>
       </form>
