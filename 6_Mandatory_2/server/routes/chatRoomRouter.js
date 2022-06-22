@@ -80,5 +80,19 @@ router.get("/:socketId", checkAuth, checkAdmin, async (req, res) => {
     }
 })
 
+router.delete("/", checkAuth, checkAdmin, async (req, res) => {
+    try {
+        await ChatRoom.deleteMany({});
+
+        res.status(200).json({
+            errors: [],
+            data: {
+            }
+        })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 
 export default router

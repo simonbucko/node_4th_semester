@@ -22,18 +22,21 @@
     //set up sockets and prevent created new one on each page render
     if (!$chatRoomSocket.isSet) {
       socket = io(`${SERVER_SOCKET_URL}/chatroom`);
-      chatRoomSocket.set({ ...$chatRoomSocket, isSet: true, socket });
+      socket.on("connect", () => {
+        chatRoomSocket.set({ ...$chatRoomSocket, isSet: true, socket });
+        socket.on("newMessage", (message) => {
+          if (message.sender === "support") return;
+          messages = [...messages, message];
+        });
+      });
+      socket.emit("joinRoom", $params.socketId);
     } else {
       socket = $chatRoomSocket.socket;
-    }
-    socket.on("connect", () => {
       socket.on("newMessage", (message) => {
         if (message.sender === "support") return;
         messages = [...messages, message];
       });
-    });
-
-    socket.emit("joinRoom", $params.socketId);
+    }
 
     //get chatroom data
     const {
@@ -79,7 +82,13 @@
       <div class="chatWrapper">
         <div class="messagesWrapper">
           {#each messages as message}
-            <div>{message.text}</div>
+            <div
+              class={`message ${
+                message.sender === "support" ? "supportMessage" : "userMessage"
+              }`}
+            >
+              {message.text}
+            </div>
           {/each}
           <div bind:this={anchor} />
         </div>
@@ -115,16 +124,35 @@
     padding: 16px;
     display: flex;
     flex-direction: column;
-    height: 60%;
   }
 
   .messagesWrapper {
     flex: 1;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .inputWrapper {
     display: flex;
     height: 36px;
+  }
+  .message {
+    width: fit-content;
+    max-width: 33.33%;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+  .userMessage {
+    align-self: flex-start;
+    color: black;
+    background-color: var(--bright-color);
+  }
+  .supportMessage {
+    align-self: flex-end;
+    color: var(--bright-color);
+    background-color: var(--primary-color);
   }
 </style>

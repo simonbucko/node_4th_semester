@@ -129,7 +129,15 @@
             <div class="chatWrapper">
               <div class="messagesWrapper">
                 {#each messages as message}
-                  <div class="message">{message.text}</div>
+                  <div
+                    class={`message ${
+                      message.sender === "support"
+                        ? "supportMessage"
+                        : "userMessage"
+                    }`}
+                  >
+                    {message.text}
+                  </div>
                 {/each}
                 <div bind:this={anchor} />
               </div>
@@ -213,10 +221,31 @@
   .messagesWrapper {
     flex: 1;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 
   .inputWrapper {
     display: flex;
     margin-top: 8px;
+  }
+
+  .message {
+    width: fit-content;
+    max-width: 66.66%;
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  }
+  .supportMessage {
+    align-self: flex-start;
+    color: black;
+    background-color: var(--bright-color);
+  }
+  .userMessage {
+    align-self: flex-end;
+    color: var(--bright-color);
+    background-color: var(--primary-color);
   }
 </style>
