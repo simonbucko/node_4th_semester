@@ -32,7 +32,8 @@ const registerChatRoomSocket = (io) => {
                 console.log(error)
             }
             var room = io.of("/socket/chatroom").adapter.rooms.get(currentRoomId);
-            // room is Set here
+            // room is of Set here
+            // TODO: if room size 1 make unread messages
             console.log(room.size);
             io.of("/socket/chatroom").to(currentRoomId).emit("newMessage", message)
         })
@@ -42,7 +43,14 @@ const registerChatRoomSocket = (io) => {
             socket.join(roomId)
         })
 
+        socket.on("leaveRoom", (roomId) => {
+            console.log(`${socket.id} user left ${roomId} room`)
+            socket.leave(roomId)
+        })
+
         socket.on("disconnect", () => {
+            // TODO: just inform users in that room that user has disconeccted 
+            io.of("/socket/chatroom").to(socket.id).emit("userDisconnected")
             console.log("socket.io, /chatroom: User disconnected: ", socket.id);
         });
     });

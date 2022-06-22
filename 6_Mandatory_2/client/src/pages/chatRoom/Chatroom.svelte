@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import axios from "axios";
   import { SERVER_API_URL, SERVER_SOCKET_URL } from "../../common/constants";
   import io from "socket.io-client";
@@ -18,7 +18,12 @@
   let anchor;
   let inputMessage = "";
 
+  onDestroy(() => {
+    socket.emit("leaveRoom", $params.socketId);
+  });
+
   onMount(async () => {
+    // TODO: mark messages as read
     //set up sockets and prevent created new one on each page render
     if (!$chatRoomSocket.isSet) {
       socket = io(`${SERVER_SOCKET_URL}/chatroom`);
@@ -28,6 +33,9 @@
           if (message.sender === "support") return;
           messages = [...messages, message];
         });
+        socket.on("userDisconnected", () => {
+          console.log("user has disconnected");
+        });
       });
       socket.emit("joinRoom", $params.socketId);
     } else {
@@ -35,6 +43,9 @@
       socket.on("newMessage", (message) => {
         if (message.sender === "support") return;
         messages = [...messages, message];
+      });
+      socket.on("userDisconnected", () => {
+        console.log("user has disconnected");
       });
     }
 
