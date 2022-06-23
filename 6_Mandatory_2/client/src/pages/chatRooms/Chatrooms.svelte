@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import axios from "axios";
   import { SERVER_API_URL, SERVER_SOCKET_URL } from "../../common/constants";
   import io from "socket.io-client";
@@ -13,14 +13,21 @@
   let isLoadingChatRooms = true;
   let socket;
 
+  onDestroy(() => {
+    socket.disconnect();
+  });
+
   onMount(async () => {
     //set up sockets and prevent created new one on each page render
     if (!$chatRoomsSocket.isSet) {
       socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-      setupSocketListeners();
-      chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true, socket });
+      socket.on("connect", () => {
+        // chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true, socket });
+        setupSocketListeners();
+      });
     } else {
-      socket = $chatRoomsSocket.socket;
+      // socket = $chatRoomsSocket.socket;
+      // setupSocketListeners();
     }
     //get chatrooms
     const {
@@ -39,22 +46,14 @@
       chatRooms = [chatRoom, ...chatRooms];
     });
     socket.on("new-unread-messages", (roomId) => {
-      const newChatrooms = chatRooms.map((chatRoom) => {
+      console.log("calling update");
+      chatRooms = chatRooms.map((chatRoom) => {
         if (chatRoom._id === roomId) {
-          // console.log("updating", chatRoom._id);
-          // console.log("updating", roomId);
           return {
             ...chatRoom,
             hasUnreadMessages: true,
           };
         } else return chatRoom;
-      });
-      chatRooms.forEach((chatRoom) => {
-        console.log(chatRoom);
-      });
-      chatRooms = newChatrooms;
-      chatRooms.forEach((chatRoom) => {
-        console.log(chatRoom);
       });
     });
   };
