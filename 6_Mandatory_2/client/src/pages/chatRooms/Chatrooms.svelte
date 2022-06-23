@@ -3,7 +3,7 @@
   import axios from "axios";
   import { SERVER_API_URL, SERVER_SOCKET_URL } from "../../common/constants";
   import io from "socket.io-client";
-  import { user, chatRoomsSocket } from "../../store/store";
+  import { user } from "../../store/store";
   import Loader from "../../common/Loader.svelte";
   import Button, { Label } from "@smui/button";
   import { navigate } from "svelte-navigator";
@@ -18,17 +18,10 @@
   });
 
   onMount(async () => {
-    //set up sockets and prevent created new one on each page render
-    if (!$chatRoomsSocket.isSet) {
-      socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-      socket.on("connect", () => {
-        // chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true, socket });
-        setupSocketListeners();
-      });
-    } else {
-      // socket = $chatRoomsSocket.socket;
-      // setupSocketListeners();
-    }
+    socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
+    socket.on("connect", () => {
+      setupSocketListeners();
+    });
     //get chatrooms
     const {
       data: { data },
@@ -46,7 +39,6 @@
       chatRooms = [chatRoom, ...chatRooms];
     });
     socket.on("new-unread-messages", (roomId) => {
-      console.log("calling update");
       chatRooms = chatRooms.map((chatRoom) => {
         if (chatRoom._id === roomId) {
           return {

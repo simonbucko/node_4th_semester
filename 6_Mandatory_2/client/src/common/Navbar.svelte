@@ -8,12 +8,7 @@
     ADD_PRODUCT,
     CHAT_ROOMS,
   } from "../routing/constants";
-  import {
-    user,
-    defaultUser,
-    chatRoomsSocket,
-    defaultChatRoomsSocket,
-  } from "../store/store";
+  import { user, defaultUser } from "../store/store";
   import IconButton from "@smui/icon-button";
   import Button, { Label } from "@smui/button";
   import { useNavigate } from "svelte-navigator";
@@ -35,7 +30,6 @@
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("cart");
     user.set(defaultUser);
-    chatRoomsSocket.set(defaultChatRoomsSocket);
     navigate(HOME);
   };
 </script>

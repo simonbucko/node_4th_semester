@@ -3,7 +3,7 @@
   import axios from "axios";
   import { SERVER_API_URL, SERVER_SOCKET_URL } from "../../common/constants";
   import io from "socket.io-client";
-  import { user, chatRoomSocket } from "../../store/store";
+  import { user } from "../../store/store";
   import Loader from "../../common/Loader.svelte";
   import Button, { Label } from "@smui/button";
   import { useParams } from "svelte-navigator";
@@ -21,21 +21,15 @@
 
   onDestroy(() => {
     socket.emit("leaveRoom", $params.socketId);
+    socket.disconnect();
   });
 
   onMount(async () => {
-    //set up sockets and prevent created new one on each page render
-    if (!$chatRoomSocket.isSet) {
-      socket = io(`${SERVER_SOCKET_URL}/chatroom`);
-      socket.on("connect", () => {
-        chatRoomSocket.set({ ...$chatRoomSocket, isSet: true, socket });
-        setupSocketListeners();
-      });
-    } else {
-      socket = $chatRoomSocket.socket;
+    socket = io(`${SERVER_SOCKET_URL}/chatroom`);
+    socket.on("connect", () => {
       setupSocketListeners();
-    }
-    socket.emit("joinRoom", $params.socketId);
+      socket.emit("joinRoom", $params.socketId);
+    });
 
     //get chatroom data
     const {
