@@ -11,20 +11,17 @@
 
   let chatRooms = [];
   let isLoadingChatRooms = true;
+  let socket;
 
   onMount(async () => {
     //set up sockets and prevent created new one on each page render
     if (!$chatRoomsSocket.isSet) {
-      const socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
-      socket.on("new-active-chat-room", (chatRoom) => {
-        chatRooms = [chatRoom, ...chatRooms];
-      });
+      socket = io(`${SERVER_SOCKET_URL}/chatrooms`);
+      setupSocketListeners();
       chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true, socket });
     } else {
-      const socket = $chatRoomsSocket.socket;
-      socket.on("new-active-chat-room", (chatRoom) => {
-        chatRooms = [chatRoom, ...chatRooms];
-      });
+      socket = $chatRoomsSocket.socket;
+      // setupSocketListeners();
     }
     //get chatrooms
     const {
@@ -37,6 +34,16 @@
     chatRooms = data.chatRooms;
     isLoadingChatRooms = false;
   });
+
+  const setupSocketListeners = () => {
+    socket.on("new-active-chat-room", (chatRoom) => {
+      chatRooms = [chatRoom, ...chatRooms];
+    });
+    socket.on("new-unread-messages", (roomId) => {
+      console.log("we have some unread messages");
+      console.log(roomId);
+    });
+  };
 </script>
 
 <main>

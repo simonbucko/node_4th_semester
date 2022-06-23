@@ -21,7 +21,7 @@ const registerChatRoomSocket = (io) => {
             const currentRoomId = roomId || socket.id
             console.log(message, socket.id, currentRoomId)
             try {
-                ChatRoom.findOneAndUpdate(
+                await ChatRoom.findOneAndUpdate(
                     { roomId: currentRoomId },
                     { $push: { messages: message } },
                     (error, success) => {
@@ -29,6 +29,7 @@ const registerChatRoomSocket = (io) => {
                         // console.log(success, "success")
                     });
             } catch (error) {
+                console.log("Error while updaing messages")
                 console.log(error)
             }
             var room = io.of("/socket/chatroom").adapter.rooms.get(currentRoomId);
@@ -36,11 +37,12 @@ const registerChatRoomSocket = (io) => {
             // it is only user that is connected
             if (room.size === 1) {
                 try {
-                    ChatRoom.findOneAndUpdate(
+                    await ChatRoom.findOneAndUpdate(
                         { roomId: currentRoomId },
                         { $set: { hasUnreadMessages: true } }
-                    )
+                    ).clone()
                 } catch (error) {
+                    console.log("Error while updaing read messages")
                     console.log(error)
                 }
 
@@ -80,7 +82,6 @@ const registerChangeStream = (io, mongoose) => {
     const collection = db.collection('chatrooms');
     const changeStream = collection.watch();
     changeStream.on('change', async (next) => {
-        // console.log(next) 
         switch (next.operationType) {
             case 'insert': {
                 let { fullDocument: chatRoom } = next
@@ -88,7 +89,14 @@ const registerChangeStream = (io, mongoose) => {
                 io.of("/socket/chatrooms").emit("new-active-chat-room", chatRoom)
                 break;
             }
-            //TODO: also listen for updates on hasUnreadMessages
+            case 'update': {
+                let { documentKey: { _id }, updateDescription: { updatedFields } } = next
+                if (updatedFields?.hasUnreadMessages !== undefined && updatedFields?.hasUnreadMessages) {
+                    console.log("was in")
+                    io.of("/socket/chatrooms").emit("new-unread-messages", _id.toString())
+                }
+                break;
+            }
             default: {
                 break;
             }

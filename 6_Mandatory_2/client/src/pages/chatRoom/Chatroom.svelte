@@ -24,7 +24,6 @@
   });
 
   onMount(async () => {
-    // TODO: mark messages as read
     //set up sockets and prevent created new one on each page render
     if (!$chatRoomSocket.isSet) {
       socket = io(`${SERVER_SOCKET_URL}/chatroom`);
