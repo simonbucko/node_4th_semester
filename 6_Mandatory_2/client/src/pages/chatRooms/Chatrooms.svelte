@@ -21,7 +21,6 @@
       chatRoomsSocket.set({ ...$chatRoomsSocket, isSet: true, socket });
     } else {
       socket = $chatRoomsSocket.socket;
-      // setupSocketListeners();
     }
     //get chatrooms
     const {
@@ -40,8 +39,23 @@
       chatRooms = [chatRoom, ...chatRooms];
     });
     socket.on("new-unread-messages", (roomId) => {
-      console.log("we have some unread messages");
-      console.log(roomId);
+      const newChatrooms = chatRooms.map((chatRoom) => {
+        if (chatRoom._id === roomId) {
+          // console.log("updating", chatRoom._id);
+          // console.log("updating", roomId);
+          return {
+            ...chatRoom,
+            hasUnreadMessages: true,
+          };
+        } else return chatRoom;
+      });
+      chatRooms.forEach((chatRoom) => {
+        console.log(chatRoom);
+      });
+      chatRooms = newChatrooms;
+      chatRooms.forEach((chatRoom) => {
+        console.log(chatRoom);
+      });
     });
   };
 </script>
