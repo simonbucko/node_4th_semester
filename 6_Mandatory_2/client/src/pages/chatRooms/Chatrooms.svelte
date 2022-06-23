@@ -48,6 +48,16 @@
         } else return chatRoom;
       });
     });
+    socket.on("new-messages-read", (roomId) => {
+      chatRooms = chatRooms.map((chatRoom) => {
+        if (chatRoom._id === roomId) {
+          return {
+            ...chatRoom,
+            hasUnreadMessages: false,
+          };
+        } else return chatRoom;
+      });
+    });
   };
 </script>
 

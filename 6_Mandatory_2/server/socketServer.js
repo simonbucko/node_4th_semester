@@ -90,6 +90,9 @@ const registerChangeStream = (io, mongoose) => {
                 if (updatedFields?.hasUnreadMessages !== undefined && updatedFields?.hasUnreadMessages) {
                     io.of("/socket/chatrooms").emit("new-unread-messages", _id.toString())
                 }
+                if (updatedFields?.hasUnreadMessages !== undefined && !updatedFields?.hasUnreadMessages) {
+                    io.of("/socket/chatrooms").emit("new-messages-read", _id.toString())
+                }
                 break;
             }
             default: {
