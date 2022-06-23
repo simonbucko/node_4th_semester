@@ -23,11 +23,7 @@ const registerChatRoomSocket = (io) => {
             try {
                 await ChatRoom.findOneAndUpdate(
                     { roomId: currentRoomId },
-                    { $push: { messages: message } },
-                    (error, success) => {
-                        // console.log(error, "error")
-                        // console.log(success, "success")
-                    });
+                    { $push: { messages: message } }).exec();
             } catch (error) {
                 console.log("Error while updaing messages")
                 console.log(error)
@@ -40,7 +36,7 @@ const registerChatRoomSocket = (io) => {
                     await ChatRoom.findOneAndUpdate(
                         { roomId: currentRoomId },
                         { $set: { hasUnreadMessages: true } }
-                    ).clone()
+                    ).exec()
                 } catch (error) {
                     console.log("Error while updaing read messages")
                     console.log(error)
@@ -92,7 +88,6 @@ const registerChangeStream = (io, mongoose) => {
             case 'update': {
                 let { documentKey: { _id }, updateDescription: { updatedFields } } = next
                 if (updatedFields?.hasUnreadMessages !== undefined && updatedFields?.hasUnreadMessages) {
-                    console.log("was in")
                     io.of("/socket/chatrooms").emit("new-unread-messages", _id.toString())
                 }
                 break;
