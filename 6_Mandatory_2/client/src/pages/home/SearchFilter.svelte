@@ -2,7 +2,6 @@
   import Button, { Label } from "@smui/button";
   import Textfield from "@smui/textfield";
   import Menu from "@smui/menu";
-  import IconButton from "@smui/icon-button";
   import List, { Item, Text } from "@smui/list";
 
   export let onSearch;

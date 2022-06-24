@@ -8,16 +8,21 @@
   import SearchFilter from "./SearchFilter.svelte";
 
   let products = [];
+  let totalProductsCount;
+  let page = 1;
+  const PRODUCTS_PER_PAGE = 12;
 
   onMount(async () => {
     const {
       data: { data },
     } = await axios.get(`${SERVER_API_URL}/products`);
     products = data.products;
+    totalProductsCount = data.totalCount;
   });
 
   const handleSearch = (searchObj) => {
     console.log(products);
+    console.log(searchObj);
   };
 </script>
 
