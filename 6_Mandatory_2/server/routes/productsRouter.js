@@ -18,11 +18,18 @@ router.get("/", async (req, res) => {
     const { page, limit, priceOrder, searchText } = req.query
 
     const query = Product.find();
-    if (searchText) {
+    if (searchText && searchText !== "") {
         query.where({ name: searchText })
     }
-    if (priceOrder) {
-        query.sort({ price: -1 })
+    if (priceOrder && priceOrder !== "") {
+        switch (priceOrder) {
+            case "ASC":
+                query.sort({ price: 1 })
+                break;
+            case "DESC":
+                query.sort({ price: -1 })
+                break;
+        }
     }
     const products = await query.skip((page - 1) * limit).limit(limit).exec();
     const totalCount = await Product.countDocuments();
