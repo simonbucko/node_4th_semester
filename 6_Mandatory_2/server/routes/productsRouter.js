@@ -19,9 +19,11 @@ router.get("/", async (req, res) => {
 
     const query = Product.find();
     if (searchText && searchText !== "") {
-        query.where({ name: searchText })
+        console.log("a")
+        query.where({ name: { $regex: /searchText/ } })
     }
     if (priceOrder && priceOrder !== "") {
+        console.log("b")
         switch (priceOrder) {
             case "ASC":
                 query.sort({ price: 1 })
