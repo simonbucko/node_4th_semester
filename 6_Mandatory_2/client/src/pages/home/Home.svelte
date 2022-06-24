@@ -5,6 +5,7 @@
   import Loader from "../../common/Loader.svelte";
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Card from "./Card.svelte";
+  import SearchFilter from "./SearchFilter.svelte";
 
   let products = [];
 
@@ -14,9 +15,14 @@
     } = await axios.get(`${SERVER_API_URL}/products`);
     products = data.products;
   });
+
+  const handleSearch = (searchObj) => {
+    console.log(products);
+  };
 </script>
 
 <main>
+  <SearchFilter onSearch={handleSearch} />
   <div class="wrapper">
     {#if !!products.length}
       <LayoutGrid>
