@@ -14,8 +14,19 @@ router.post("/", checkAuth, checkAdmin, async (req, res) => {
 })
 
 router.get("/", async (req, res) => {
-    const products = await Product.find();
+    console.log(req.query)
+    const { page, limit, priceOrder, searchText } = req.query
+
+    const query = Product.find();
+    if (searchText) {
+        query.where({ name: searchText })
+    }
+    if (priceOrder) {
+        query.sort({ price: -1 })
+    }
+    const products = await query.skip((page - 1) * limit).limit(limit).exec();
     const totalCount = await Product.countDocuments();
+
 
     res.status(200).json({
         errors: [],

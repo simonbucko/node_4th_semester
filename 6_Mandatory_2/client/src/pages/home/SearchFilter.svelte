@@ -16,6 +16,7 @@
 
   const handleOrderChange = (order) => {
     priceOrder = order;
+    onSearch({ priceOrder, searchText });
   };
 </script>
 

@@ -10,19 +10,27 @@
   let products = [];
   let totalProductsCount;
   let page = 1;
-  const PRODUCTS_PER_PAGE = 12;
+  const limit = 12;
 
   onMount(async () => {
     const {
       data: { data },
-    } = await axios.get(`${SERVER_API_URL}/products`);
+    } = await axios.get(`${SERVER_API_URL}/products`, {
+      params: { page, limit },
+    });
     products = data.products;
     totalProductsCount = data.totalCount;
   });
 
-  const handleSearch = (searchObj) => {
-    console.log(products);
-    console.log(searchObj);
+  const handleSearch = async (searchObj) => {
+    page = 1;
+    const {
+      data: { data },
+    } = await axios.get(`${SERVER_API_URL}/products`, {
+      params: { page, limit, ...searchObj },
+    });
+    products = data.products;
+    totalProductsCount = data.totalCount;
   };
 </script>
 
