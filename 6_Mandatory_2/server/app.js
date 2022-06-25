@@ -8,6 +8,7 @@ import authRouter from "./routes/authRouter.js"
 import orderRouter from "./routes/orderRouter.js"
 import productsRouter from "./routes/productsRouter.js"
 import chatRoomRouter from "./routes/chatRoomRouter.js"
+import checkoutRouter from "./routes/checkoutRouter.js"
 
 dotenv.config()
 
@@ -23,6 +24,7 @@ mongoose.connect(process.env.MONGO_URI)
         app.use("/api/products", productsRouter)
         app.use("/api/order", orderRouter)
         app.use("/api/chatrooms", chatRoomRouter)
+        app.use("/api/checkout", checkoutRouter)
         app.use("/test", (req, res) => { res.send("Backend is working and is ready for requests") })
         //spin up the server
         const PORT = process.env.PORT || 8000

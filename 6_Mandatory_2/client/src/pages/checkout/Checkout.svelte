@@ -11,16 +11,18 @@
   import HelperText from "@smui/textfield/helper-text";
   import { user } from "../../store/store";
   import { loadStripe } from "@stripe/stripe-js";
-  import { Container } from "svelte-stripe";
+  import { PaymentElement } from "svelte-stripe";
   import { onMount } from "svelte";
 
   let stripe = null;
+  let clientSecret = null;
   let cardNumber = "";
   let deliveryAddress = "";
   $: email = $user.email || "";
   let snackbarWithClose;
   $: cartItems = JSON.parse(sessionStorage.getItem("cart"));
   let isProcessingOrder = false;
+  let elements;
 
   const handleIncrement = (productId, quantity) => {
     cartItems = cartItems.map((item) => {
@@ -83,6 +85,13 @@
 
   onMount(async () => {
     stripe = await loadStripe(STRIPE_PUBLIC_KEY);
+    const {
+      data: { data },
+    } = await axios.post(`${SERVER_API_URL}/checkout`, {
+      amount: 350,
+    });
+    clientSecret = data.clientSecret;
+    console.log(clientSecret);
   });
 </script>
 
@@ -114,53 +123,58 @@
           </div>
         {/each}
       </div>
-      {#if stripe}
-        <Container {stripe}>
-          <form on:submit={handleSubmit}>
-            <Textfield
-              style="width: 100%;"
-              helperLine$style="width: 100%;"
-              bind:value={cardNumber}
-              label="Credit Card Number"
-              required
-              type="number"
+      {#if stripe && clientSecret}
+        <form on:submit={handleSubmit}>
+          <Textfield
+            style="width: 100%;"
+            helperLine$style="width: 100%;"
+            bind:value={cardNumber}
+            label="Credit Card Number"
+            required
+            type="number"
+          >
+            <HelperText slot="helper">Enter your credit card number</HelperText>
+          </Textfield>
+          <Textfield
+            style="width: 100%;"
+            helperLine$style="width: 100%;"
+            bind:value={deliveryAddress}
+            label="Delivery Address"
+            required
+            input$maxlength={30}
+          >
+            <HelperText slot="helper">Enter your delivery address</HelperText>
+          </Textfield>
+          <Textfield
+            style="width: 100%;"
+            helperLine$style="width: 100%;"
+            bind:value={email}
+            label="Email Address"
+            required
+            input$maxlength={40}
+          >
+            <HelperText slot="helper"
+              >Enter your email to receive order confirmation</HelperText
             >
-              <HelperText slot="helper"
-                >Enter your credit card number</HelperText
-              >
-            </Textfield>
-            <Textfield
-              style="width: 100%;"
-              helperLine$style="width: 100%;"
-              bind:value={deliveryAddress}
-              label="Delivery Address"
-              required
-              input$maxlength={30}
-            >
-              <HelperText slot="helper">Enter your delivery address</HelperText>
-            </Textfield>
-            <Textfield
-              style="width: 100%;"
-              helperLine$style="width: 100%;"
-              bind:value={email}
-              label="Email Address"
-              required
-              input$maxlength={40}
-            >
-              <HelperText slot="helper"
-                >Enter your email to receive order confirmation</HelperText
-              >
-            </Textfield>
-
-            <Button
-              variant="raised"
-              type="submit"
-              style="width: 100%; margin-top: 16px"
-            >
-              <Label>Pay</Label>
-            </Button>
-          </form>
-        </Container>
+          </Textfield>
+          <PaymentElement
+            {stripe}
+            {clientSecret}
+            bind:elements
+            theme="flat"
+            labels="floating"
+            variables={{ colorPrimary: "#7c4dff" }}
+            rules={{ ".Input": { border: "solid 1px #0002" } }}
+          />
+          <Button
+            variant="raised"
+            type="submit"
+            style="width: 100%; margin-top: 16px"
+            disabled={isProcessingOrder}
+          >
+            <Label>{isProcessingOrder ? "Processing..." : "Pay"}</Label>
+          </Button>
+        </form>
       {/if}
     {:else}
       <p>
