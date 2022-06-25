@@ -17,6 +17,7 @@
   let stripe = null;
   let clientSecret = null;
   let deliveryAddress = "";
+  // TODO: fix this stupi email
   $: email = $user.email || "";
   let snackbarWithClose;
   $: cartItems = JSON.parse(sessionStorage.getItem("cart"));
@@ -84,22 +85,23 @@
     } else {
       cartItems = null;
       sessionStorage.removeItem("cart");
-      isProcessingOrder = false;
       email = "";
       deliveryAddress = "";
+      isProcessingOrder = false;
+      // TODO: redirect user to success page
       console.log("thank you");
     }
   };
 
   onMount(async () => {
     stripe = await loadStripe(STRIPE_PUBLIC_KEY);
+    // TODO: calculate amount they need to pay
     const {
       data: { data },
     } = await axios.post(`${SERVER_API_URL}/checkout`, {
       amount: 350,
     });
     clientSecret = data.clientSecret;
-    console.log(clientSecret);
   });
 </script>
 
@@ -170,7 +172,7 @@
             style="width: 100%; margin-top: 16px"
             disabled={isProcessingOrder}
           >
-            <Label>{isProcessingOrder ? "Processing..." : "Pay"}</Label>
+            <Label>Pay</Label>
           </Button>
         </form>
       {/if}
