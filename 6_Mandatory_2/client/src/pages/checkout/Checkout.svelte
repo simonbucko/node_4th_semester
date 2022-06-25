@@ -16,7 +16,6 @@
 
   let stripe = null;
   let clientSecret = null;
-  let cardNumber = "";
   let deliveryAddress = "";
   $: email = $user.email || "";
   let snackbarWithClose;
@@ -68,19 +67,28 @@
         userId: $user.id || null,
         products,
         deliveryAddress,
-        cardNumber,
         email,
       });
     } catch (error) {
       console.log(error);
     }
-    snackbarWithClose.open();
-    cartItems = null;
-    sessionStorage.removeItem("cart");
-    isProcessingOrder = false;
-    email = "";
-    deliveryAddress = "";
-    cardNumber = "";
+    const result = await stripe.confirmPayment({
+      elements,
+      redirect: "if_required",
+    });
+    // log results, for debugging
+    console.log({ result });
+    if (result.error) {
+      // payment failed, notify user
+      processing = false;
+    } else {
+      cartItems = null;
+      sessionStorage.removeItem("cart");
+      isProcessingOrder = false;
+      email = "";
+      deliveryAddress = "";
+      console.log("thank you");
+    }
   };
 
   onMount(async () => {
@@ -125,16 +133,6 @@
       </div>
       {#if stripe && clientSecret}
         <form on:submit={handleSubmit}>
-          <Textfield
-            style="width: 100%;"
-            helperLine$style="width: 100%;"
-            bind:value={cardNumber}
-            label="Credit Card Number"
-            required
-            type="number"
-          >
-            <HelperText slot="helper">Enter your credit card number</HelperText>
-          </Textfield>
           <Textfield
             style="width: 100%;"
             helperLine$style="width: 100%;"

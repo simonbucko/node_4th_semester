@@ -26,12 +26,6 @@ const orderSchema = new Schema({
         min: 5,
         required: true,
     },
-    cardNumber: {
-        type: String,
-        trim: true,
-        minlength: 15,
-        required: true,
-    },
     status: {
         type: String,
         trim: true,
