@@ -8,6 +8,7 @@
   import SearchFilter from "./SearchFilter.svelte";
 
   let products = [];
+  let isLoadingProducts = true;
   let totalProductsCount;
   let page = 1;
   const limit = 12;

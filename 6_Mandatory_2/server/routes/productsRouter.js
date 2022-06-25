@@ -15,15 +15,14 @@ router.post("/", checkAuth, checkAdmin, async (req, res) => {
 
 router.get("/", async (req, res) => {
     console.log(req.query)
-    const { page, limit, priceOrder, searchText } = req.query
+    let { page, limit, priceOrder, searchText } = req.query
 
     const query = Product.find();
     if (searchText && searchText !== "") {
-        console.log("a")
-        query.where({ name: { $regex: /searchText/ } })
+        const regex = new RegExp(searchText);
+        query.where("name").equals({ $regex: regex, $options: "i" })
     }
     if (priceOrder && priceOrder !== "") {
-        console.log("b")
         switch (priceOrder) {
             case "ASC":
                 query.sort({ price: 1 })
