@@ -13,7 +13,7 @@
 
   let cardNumber = "";
   let deliveryAddress = "";
-  let email = "";
+  $: email = $user.email || "";
   let snackbarWithClose;
   $: cartItems = JSON.parse(sessionStorage.getItem("cart"));
   let isProcessingOrder = false;
