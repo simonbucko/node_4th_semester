@@ -12,7 +12,7 @@
   let isLoadingProducts = true;
   let totalProductsCount;
   let page = 1;
-  const limit = 12;
+  const LIMIT = 12;
   let lastSearchObj;
 
   onMount(async () => {
@@ -20,7 +20,7 @@
       const {
         data: { data },
       } = await axios.get(`${SERVER_API_URL}/products`, {
-        params: { page, limit },
+        params: { page, limit: LIMIT },
       });
       products = data.products;
       totalProductsCount = data.totalCount;
@@ -39,7 +39,7 @@
       const {
         data: { data },
       } = await axios.get(`${SERVER_API_URL}/products`, {
-        params: { page, limit, ...searchObj },
+        params: { page, limit: LIMIT, ...searchObj },
       });
       products = data.products;
       totalProductsCount = data.totalCount;
@@ -49,6 +49,10 @@
       isLoadingProducts = false;
     }
   };
+
+  const handleNextPage = () => {};
+
+  const handlePreviousPage = () => {};
 </script>
 
 <main>
@@ -73,7 +77,12 @@
           </Cell>
         {/each}
       </LayoutGrid>
-      <Pagination {page} />
+      <Pagination
+        currentPage={page}
+        lastPage={page}
+        onNextPage={handleNextPage}
+        onPreviousPage={handlePreviousPage}
+      />
     {/if}
   </div>
 </main>
