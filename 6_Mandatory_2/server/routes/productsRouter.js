@@ -14,7 +14,6 @@ router.post("/", checkAuth, checkAdmin, async (req, res) => {
 })
 
 router.get("/", async (req, res) => {
-    console.log(req.query)
     let { page, limit, priceOrder, searchText } = req.query
 
     const query = Product.find();
@@ -33,7 +32,6 @@ router.get("/", async (req, res) => {
         }
     }
     const totalCount = (await query.exec())?.length;
-    console.log(totalCount)
     const products = await query.skip((page - 1) * limit).limit(limit).clone();
 
 

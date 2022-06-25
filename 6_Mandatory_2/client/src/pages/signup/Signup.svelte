@@ -14,6 +14,7 @@
   let email = "";
   let password = "";
   let isProcessingOrder = false;
+  let errorMessage = "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,14 +34,14 @@
       });
       sessionStorage.setItem("token", data.user.token);
     } catch (error) {
-      console.log(error);
-      return;
+      errorMessage = error.response.data.errors[0].msg;
     } finally {
       isProcessingOrder = false;
-      name = "";
-      email = "";
-      password = "";
       if ($user.isAuthenticated) {
+        name = "";
+        email = "";
+        password = "";
+        errorMessage = "";
         navigate(HOME, {
           replace: true,
         });
@@ -76,6 +77,9 @@
         required
         type="password"
       />
+      {#if errorMessage !== ""}
+        <div class="errorMessage">{errorMessage}</div>
+      {/if}
       <Button
         variant="raised"
         type="submit"
@@ -114,5 +118,8 @@
     right: 0;
     background-color: black;
     opacity: 0.6;
+  }
+  .errorMessage {
+    color: var(--error-color);
   }
 </style>

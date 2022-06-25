@@ -33,7 +33,6 @@
       sessionStorage.setItem("token", data.user.token);
     } catch (error) {
       errorMessage = error.response.data.errors[0].msg;
-      return;
     } finally {
       isProcessingOrder = false;
       if ($user.isAuthenticated) {
@@ -69,7 +68,7 @@
         type="password"
       />
       {#if errorMessage !== ""}
-        <div>{errorMessage}</div>
+        <div class="errorMessage">{errorMessage}</div>
       {/if}
       <Button
         variant="raised"
@@ -109,5 +108,9 @@
     right: 0;
     background-color: black;
     opacity: 0.6;
+  }
+
+  .errorMessage {
+    color: var(--error-color);
   }
 </style>
