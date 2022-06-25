@@ -77,8 +77,6 @@
       elements,
       redirect: "if_required",
     });
-    // log results, for debugging
-    console.log({ result });
     if (result.error) {
       // payment failed, notify user
       processing = false;
