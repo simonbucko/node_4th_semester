@@ -40,6 +40,7 @@ router.post("/signup", body("email").isEmail().withMessage("The email is invalid
 
 router.post("/login", body("email").isEmail().withMessage("The email is invalid"), async (req, res) => {
     //returns array of errors
+    // TODO: check all errors i am returing
     const validationsErrors = validationResult(req)
     if (!validationsErrors.isEmpty()) {
         const errors = validationsErrors.array().map(error => ({
