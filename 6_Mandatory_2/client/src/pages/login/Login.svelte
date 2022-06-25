@@ -13,6 +13,7 @@
   let email = "";
   let password = "";
   let isProcessingOrder = false;
+  let errorMessage = "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,13 +32,14 @@
       });
       sessionStorage.setItem("token", data.user.token);
     } catch (error) {
-      console.log(error);
+      errorMessage = error.response.data.errors[0].msg;
       return;
     } finally {
       isProcessingOrder = false;
-      email = "";
-      password = "";
       if ($user.isAuthenticated) {
+        email = "";
+        password = "";
+        errorMessage = "";
         navigate(HOME, {
           replace: true,
         });
@@ -66,6 +68,9 @@
         required
         type="password"
       />
+      {#if errorMessage !== ""}
+        <div>{errorMessage}</div>
+      {/if}
       <Button
         variant="raised"
         type="submit"
