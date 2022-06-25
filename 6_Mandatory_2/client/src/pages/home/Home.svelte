@@ -6,12 +6,14 @@
   import LayoutGrid, { Cell } from "@smui/layout-grid";
   import Card from "./Card.svelte";
   import SearchFilter from "./SearchFilter.svelte";
+  import Pagination from "./Pagination.svelte";
 
   let products = [];
   let isLoadingProducts = true;
   let totalProductsCount;
   let page = 1;
   const limit = 12;
+  let lastSearchObj;
 
   onMount(async () => {
     try {
@@ -31,6 +33,7 @@
 
   const handleSearch = async (searchObj) => {
     try {
+      lastSearchObj = { ...searchObj };
       isLoadingProducts = true;
       page = 1;
       const {
@@ -70,6 +73,7 @@
           </Cell>
         {/each}
       </LayoutGrid>
+      <Pagination {page} />
     {/if}
   </div>
 </main>
