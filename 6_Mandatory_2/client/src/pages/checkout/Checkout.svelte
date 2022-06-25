@@ -1,7 +1,7 @@
 <script>
   import Button, { Label } from "@smui/button";
   import axios from "axios";
-  import { SERVER_API_URL } from "../../common/constants";
+  import { SERVER_API_URL, STRIPE_PUBLIC_KEY } from "../../common/constants";
   import Loader from "../../common/Loader.svelte";
   import Snackbar, { Actions, Label as SnackLabel } from "@smui/snackbar";
   import IconButton from "@smui/icon-button";
@@ -10,7 +10,11 @@
   import Textfield from "@smui/textfield";
   import HelperText from "@smui/textfield/helper-text";
   import { user } from "../../store/store";
+  import { loadStripe } from "@stripe/stripe-js";
+  import { Container } from "svelte-stripe";
+  import { onMount } from "svelte";
 
+  let stripe = null;
   let cardNumber = "";
   let deliveryAddress = "";
   $: email = $user.email || "";
@@ -76,6 +80,10 @@
     deliveryAddress = "";
     cardNumber = "";
   };
+
+  onMount(async () => {
+    stripe = await loadStripe(STRIPE_PUBLIC_KEY);
+  });
 </script>
 
 <main>
@@ -106,47 +114,54 @@
           </div>
         {/each}
       </div>
-      <form on:submit={handleSubmit}>
-        <Textfield
-          style="width: 100%;"
-          helperLine$style="width: 100%;"
-          bind:value={cardNumber}
-          label="Credit Card Number"
-          required
-          type="number"
-        >
-          <HelperText slot="helper">Enter your credit card number</HelperText>
-        </Textfield>
-        <Textfield
-          style="width: 100%;"
-          helperLine$style="width: 100%;"
-          bind:value={deliveryAddress}
-          label="Delivery Address"
-          required
-          input$maxlength={30}
-        >
-          <HelperText slot="helper">Enter your delivery address</HelperText>
-        </Textfield>
-        <Textfield
-          style="width: 100%;"
-          helperLine$style="width: 100%;"
-          bind:value={email}
-          label="Email Address"
-          required
-          input$maxlength={40}
-        >
-          <HelperText slot="helper"
-            >Enter your email to receive order confirmation</HelperText
-          >
-        </Textfield>
-        <Button
-          variant="raised"
-          type="submit"
-          style="width: 100%; margin-top: 16px"
-        >
-          <Label>Pay</Label>
-        </Button>
-      </form>
+      {#if stripe}
+        <Container {stripe}>
+          <form on:submit={handleSubmit}>
+            <Textfield
+              style="width: 100%;"
+              helperLine$style="width: 100%;"
+              bind:value={cardNumber}
+              label="Credit Card Number"
+              required
+              type="number"
+            >
+              <HelperText slot="helper"
+                >Enter your credit card number</HelperText
+              >
+            </Textfield>
+            <Textfield
+              style="width: 100%;"
+              helperLine$style="width: 100%;"
+              bind:value={deliveryAddress}
+              label="Delivery Address"
+              required
+              input$maxlength={30}
+            >
+              <HelperText slot="helper">Enter your delivery address</HelperText>
+            </Textfield>
+            <Textfield
+              style="width: 100%;"
+              helperLine$style="width: 100%;"
+              bind:value={email}
+              label="Email Address"
+              required
+              input$maxlength={40}
+            >
+              <HelperText slot="helper"
+                >Enter your email to receive order confirmation</HelperText
+              >
+            </Textfield>
+
+            <Button
+              variant="raised"
+              type="submit"
+              style="width: 100%; margin-top: 16px"
+            >
+              <Label>Pay</Label>
+            </Button>
+          </form>
+        </Container>
+      {/if}
     {:else}
       <p>
         Your cart is empty. Do not wait and add some <Link to={HOME}
