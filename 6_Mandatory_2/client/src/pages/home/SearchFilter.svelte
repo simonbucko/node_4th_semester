@@ -27,7 +27,7 @@
       bind:value={searchText}
       style="height: 100%; flex: 1"
     />
-    <Button variant="raised" type="submit" disabled={searchText === ""}>
+    <Button variant="raised" type="submit">
       <Label>Search</Label>
     </Button>
   </form>

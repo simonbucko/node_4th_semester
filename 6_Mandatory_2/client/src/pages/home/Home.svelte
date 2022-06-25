@@ -14,31 +14,50 @@
   const limit = 12;
 
   onMount(async () => {
-    const {
-      data: { data },
-    } = await axios.get(`${SERVER_API_URL}/products`, {
-      params: { page, limit },
-    });
-    products = data.products;
-    totalProductsCount = data.totalCount;
+    try {
+      const {
+        data: { data },
+      } = await axios.get(`${SERVER_API_URL}/products`, {
+        params: { page, limit },
+      });
+      products = data.products;
+      totalProductsCount = data.totalCount;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoadingProducts = false;
+    }
   });
 
   const handleSearch = async (searchObj) => {
-    page = 1;
-    const {
-      data: { data },
-    } = await axios.get(`${SERVER_API_URL}/products`, {
-      params: { page, limit, ...searchObj },
-    });
-    products = data.products;
-    totalProductsCount = data.totalCount;
+    try {
+      isLoadingProducts = true;
+      page = 1;
+      const {
+        data: { data },
+      } = await axios.get(`${SERVER_API_URL}/products`, {
+        params: { page, limit, ...searchObj },
+      });
+      products = data.products;
+      totalProductsCount = data.totalCount;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoadingProducts = false;
+    }
   };
 </script>
 
 <main>
   <SearchFilter onSearch={handleSearch} />
   <div class="wrapper">
-    {#if !!products.length}
+    {#if isLoadingProducts}
+      <Loader />
+    {:else if products.length === 0}
+      <div class="emptyStateMessage">
+        No product were found for you search. Check you spelling and try again
+      </div>
+    {:else}
       <LayoutGrid>
         {#each products as product}
           <Cell>
@@ -51,8 +70,6 @@
           </Cell>
         {/each}
       </LayoutGrid>
-    {:else}
-      <Loader />
     {/if}
   </div>
 </main>
@@ -63,5 +80,9 @@
     height: 100%;
     max-width: 1000px;
     margin: auto;
+  }
+  .emptyStateMessage {
+    padding: 0 26px;
+    text-align: center;
   }
 </style>
