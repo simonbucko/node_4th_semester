@@ -79,7 +79,7 @@
       </LayoutGrid>
       <Pagination
         currentPage={page}
-        lastPage={page}
+        lastPage={Math.ceil(totalProductsCount / LIMIT)}
         onNextPage={handleNextPage}
         onPreviousPage={handlePreviousPage}
       />

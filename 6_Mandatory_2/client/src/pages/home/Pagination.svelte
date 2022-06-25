@@ -1,24 +1,21 @@
 <script>
-  import Button, { Label } from "@smui/button";
-  import Textfield from "@smui/textfield";
-  import Menu from "@smui/menu";
-  import List, { Item, Text } from "@smui/list";
-
   import IconButton from "@smui/icon-button";
   export let currentPage;
   export let lastPage;
+  export let onNextPage;
+  export let onPreviousPage;
 </script>
 
 <section>
   <IconButton
     class="material-icons"
-    on:click={() => {}}
+    on:click={onPreviousPage}
     disabled={currentPage === 1}>arrow_back_ios</IconButton
   >
   <div>{currentPage}/{lastPage}</div>
   <IconButton
     class="material-icons"
-    on:click={() => {}}
+    on:click={onNextPage}
     disabled={currentPage === lastPage}>arrow_forward_ios</IconButton
   >
 </section>
