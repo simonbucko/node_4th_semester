@@ -2,20 +2,19 @@
   import IconButton from "@smui/icon-button";
   export let currentPage;
   export let lastPage;
-  export let onNextPage;
-  export let onPreviousPage;
+  export let onPageChange;
 </script>
 
 <section>
   <IconButton
     class="material-icons"
-    on:click={onPreviousPage}
+    on:click={() => onPageChange(currentPage - 1)}
     disabled={currentPage === 1}>arrow_back_ios</IconButton
   >
   <div>{currentPage}/{lastPage}</div>
   <IconButton
     class="material-icons"
-    on:click={onNextPage}
+    on:click={() => onPageChange(currentPage + 1)}
     disabled={currentPage === lastPage}>arrow_forward_ios</IconButton
   >
 </section>

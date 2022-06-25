@@ -32,8 +32,9 @@ router.get("/", async (req, res) => {
                 break;
         }
     }
-    const products = await query.skip((page - 1) * limit).limit(limit).exec();
-    const totalCount = await Product.countDocuments();
+    const totalCount = (await query.exec())?.length;
+    console.log(totalCount)
+    const products = await query.skip((page - 1) * limit).limit(limit).clone();
 
 
     res.status(200).json({

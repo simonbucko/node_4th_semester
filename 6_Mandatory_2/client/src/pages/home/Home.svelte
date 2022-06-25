@@ -50,9 +50,24 @@
     }
   };
 
-  const handleNextPage = () => {};
-
-  const handlePreviousPage = () => {};
+  const handlePageChange = async (newPage) => {
+    try {
+      isLoadingProducts = true;
+      const {
+        data: { data },
+      } = await axios.get(`${SERVER_API_URL}/products`, {
+        params: { page: newPage, limit: LIMIT, ...lastSearchObj },
+      });
+      products = data.products;
+      totalProductsCount = data.totalCount;
+      page = newPage;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      isLoadingProducts = false;
+      window.scrollTo(0, 0);
+    }
+  };
 </script>
 
 <main>
@@ -80,8 +95,7 @@
       <Pagination
         currentPage={page}
         lastPage={Math.ceil(totalProductsCount / LIMIT)}
-        onNextPage={handleNextPage}
-        onPreviousPage={handlePreviousPage}
+        onPageChange={handlePageChange}
       />
     {/if}
   </div>
