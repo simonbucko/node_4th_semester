@@ -18,10 +18,18 @@
   let clientSecret = null;
   let deliveryAddress = "";
   let email = "";
-  let snackbarWithClose;
   $: cartItems = JSON.parse(sessionStorage.getItem("cart"));
   let isProcessingOrder = false;
   let elements;
+
+  const calculateSubtotal = (items) => {
+    if (items === undefined || items.length === 0) return 0;
+    let total = 0;
+    items.forEach((item) => (total += item.quantity * item.price));
+    return total;
+  };
+
+  let subTotal = calculateSubtotal(cartItems);
 
   const handleIncrement = (productId, quantity) => {
     cartItems = cartItems.map((item) => {
@@ -35,6 +43,7 @@
       }
     });
     sessionStorage.setItem("cart", JSON.stringify(cartItems));
+    subTotal = calculateSubtotal(cartItems);
   };
 
   const handleDecrement = (productId, quantity) => {
@@ -53,6 +62,7 @@
       });
     }
     sessionStorage.setItem("cart", JSON.stringify(cartItems));
+    subTotal = calculateSubtotal(cartItems);
   };
 
   const handleSubmit = async (e) => {
@@ -85,18 +95,18 @@
       email = "";
       deliveryAddress = "";
       isProcessingOrder = false;
-      // TODO: redirect user to success page
+      // TODO: replace user to success page
       console.log("thank you");
     }
   };
 
   onMount(async () => {
+    subTotal = calculateSubtotal(cartItems);
     stripe = await loadStripe(STRIPE_PUBLIC_KEY);
-    // TODO: calculate amount they need to pay
     const {
       data: { data },
     } = await axios.post(`${SERVER_API_URL}/checkout`, {
-      amount: 350,
+      amount: subTotal,
     });
     clientSecret = data.clientSecret;
   });
@@ -130,7 +140,7 @@
           </div>
         {/each}
       </div>
-      <h3 class="subtotal">Subtotal: 200€</h3>
+      <h3 class="subtotal">Subtotal: {subTotal} €</h3>
       {#if stripe && clientSecret}
         <form on:submit={handleSubmit}>
           <Textfield
@@ -183,15 +193,6 @@
     {/if}
   </div>
 </main>
-
-<Snackbar bind:this={snackbarWithClose} class="success">
-  <SnackLabel
-    >Your order has been proceeded. You should have received confirmation email</SnackLabel
-  >
-  <Actions>
-    <IconButton class="material-icons" title="Dismiss">close</IconButton>
-  </Actions>
-</Snackbar>
 
 {#if isProcessingOrder}
   <div class="modal">

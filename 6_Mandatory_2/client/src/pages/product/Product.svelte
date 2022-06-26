@@ -32,6 +32,7 @@
         quantity: counter,
         productImg: product.imgUrl,
         productName: product.name,
+        price: product.price,
       });
     } else {
       cart = JSON.parse(cart);
@@ -46,6 +47,7 @@
           quantity: counter,
           productImg: product.imgUrl,
           productName: product.name,
+          price: product.price,
         });
       }
     }
