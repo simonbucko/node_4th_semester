@@ -17,8 +17,7 @@
   let stripe = null;
   let clientSecret = null;
   let deliveryAddress = "";
-  // TODO: fix this stupi email
-  $: email = $user.email || "";
+  let email = "";
   let snackbarWithClose;
   $: cartItems = JSON.parse(sessionStorage.getItem("cart"));
   let isProcessingOrder = false;
@@ -131,6 +130,7 @@
           </div>
         {/each}
       </div>
+      <h3 class="subtotal">Subtotal: 200€</h3>
       {#if stripe && clientSecret}
         <form on:submit={handleSubmit}>
           <Textfield
@@ -249,5 +249,11 @@
     right: 0;
     background-color: black;
     opacity: 0.6;
+  }
+
+  .subtotal {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.87);
   }
 </style>
