@@ -3,17 +3,17 @@
   import axios from "axios";
   import { SERVER_API_URL, STRIPE_PUBLIC_KEY } from "../../common/constants";
   import Loader from "../../common/Loader.svelte";
-  import Snackbar, { Actions, Label as SnackLabel } from "@smui/snackbar";
-  import IconButton from "@smui/icon-button";
   import { Link } from "svelte-navigator";
-  import { HOME } from "../../routing/constants";
+  import { HOME, ORDER_CONFIRMATION } from "../../routing/constants";
   import Textfield from "@smui/textfield";
   import HelperText from "@smui/textfield/helper-text";
   import { user } from "../../store/store";
   import { loadStripe } from "@stripe/stripe-js";
   import { PaymentElement } from "svelte-stripe";
   import { onMount } from "svelte";
+  import { useNavigate } from "svelte-navigator";
 
+  const navigate = useNavigate();
   let stripe = null;
   let clientSecret = null;
   let deliveryAddress = "";
@@ -95,8 +95,9 @@
       email = "";
       deliveryAddress = "";
       isProcessingOrder = false;
-      // TODO: replace user to success page
-      console.log("thank you");
+      navigate(ORDER_CONFIRMATION, {
+        replace: true,
+      });
     }
   };
 

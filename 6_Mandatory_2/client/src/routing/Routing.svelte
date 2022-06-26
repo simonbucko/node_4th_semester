@@ -14,6 +14,7 @@
   import * as ROUTES from "./constants";
   import PrivateRoute from "./PrivateRoute.svelte";
   import SupportWindow from "../common/SupportWindow.svelte";
+  import OrderConfirmation from "../pages/orderConfirmation/OrderConfirmation.svelte";
 </script>
 
 <Router primary={false}>
@@ -23,6 +24,9 @@
   </Route>
   <Route path={ROUTES.LOGIN}>
     <Login />
+  </Route>
+  <Route path={ROUTES.ORDER_CONFIRMATION}>
+    <OrderConfirmation />
   </Route>
   <AdminRoute path={ROUTES.CHAT_ROOMS} let:location>
     <Chatrooms />
